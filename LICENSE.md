@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-TORNADO HTTP - PHP
+TORNADO HTTP SKELETON APPLICATION
 Copyright (c) 2015 Daniel Martín Spiridione
 http://tornado-php.com
 
