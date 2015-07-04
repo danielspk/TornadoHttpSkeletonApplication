@@ -1,0 +1,8 @@
+/.DS_Store
+/.idea/
+/nbproject/
+/resources/
+/app/test/phpunit.phar
+/app/vendor/
+/composer.lock
+

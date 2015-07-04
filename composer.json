@@ -1,0 +1,42 @@
+{
+    "name": "danielspk/tornadohttpskeletonapplication",
+    "description": "Aplicación esqueleto para el uso de Tornado HTTP",
+    "type": "project",
+    "keywords": [
+        "tornado http", "http", "tornado php", "tornado"
+    ],
+    "homepage": "http://tornado-php.com/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel M. Spiridione",
+            "email": "info@daniel-spiridione.com.ar",
+            "homepage": "http://daniel-spiridione.com.ar/",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "info@daniel-spiridione.com.ar",
+        "issues": "https://github.com/danielspk/tornadohttpskeletonapplication/issues",
+        "source": "https://github.com/danielspk/tornadohttpskeletonapplication"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "danielspk/tornadohttp": "~0.0",
+        "zendframework/zend-diactoros" : "~1.0",
+        "nikic/fast-route" : "~0.0",
+        "pimple/pimple" : "~3.0",
+        "league/plates": "3.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/src/"
+        }
+    },
+    "config": {
+        "vendor-dir": "app/vendor"
+    }
+}
