@@ -3,9 +3,10 @@ namespace App\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use App\Provider\Helper\Config;
 
 /**
- * Clase Middleware que carga la configuración de la Aplicación
+ * Clase Middleware que registra y carga la configuración de la Aplicación
  *
  * @package App\Middleware
  */
@@ -27,7 +28,7 @@ class ConfigLoader {
     }
 
     /**
-     * Invocación de carga de archivos de configuración
+     * Invocación de registración y carga de archivos de configuración
      *
      * @param RequestInterface $pRequest Petición
      * @param ResponseInterface $pResponse Respuesta
@@ -37,12 +38,8 @@ class ConfigLoader {
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        /** @var \App\Provider\Helper\Config $config */
-        $config = $pNext->getConfig();
 
-        if (! $config instanceof \ArrayAccess) {
-            return $pNext($pRequest, $pResponse);
-        }
+        $config = new Config();
 
         foreach ($this->files as $file) {
 
@@ -51,6 +48,8 @@ class ConfigLoader {
             }
 
         }
+
+        $pNext->setConfig($config);
 
         return $pNext($pRequest, $pResponse);
     }

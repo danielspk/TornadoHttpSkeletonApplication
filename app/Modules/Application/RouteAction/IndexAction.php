@@ -21,7 +21,10 @@ class IndexAction extends RouteAction {
      */
     public function run(RequestInterface $pRequest, ResponseInterface $pResponse)
     {
-        $pResponse->getBody()->write(' Index Action ');
+        /** @var \DateTime $date */
+        $date = $this->container->get('datetime');
+
+        $pResponse->getBody()->write(' Index Action ' . $date->format('d/m/Y'));
         $pResponse->getBody()->write($this->view->render('app::example', ['hello' => 'Hello Template']));
         return $pResponse;
     }

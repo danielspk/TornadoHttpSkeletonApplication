@@ -99,8 +99,6 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Response;
-use League\Container\Container;
-use App\Provider\Helper\Config;
 
 require '../vendor/autoload.php';
 
@@ -119,7 +117,7 @@ $mid2 = function (RequestInterface $request, ResponseInterface $response, callab
 $mid3 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     /** @var \DMS\TornadoHttp\TornadoHttp $next */
     $conf = $next->getConfig();
-    $response->getBody()->write(' Middleware 3 ' . $conf['hello'] . ' ');
+    $response->getBody()->write(' Middleware 3 ' . $conf['mode'] . ' ');
 
     //throw new \Exception('Custom Error');
 
@@ -130,7 +128,7 @@ $app = new TornadoHttp([
     'App\Middleware\ResponseEmitter',
     'App\Middleware\ErrorHandler',
     ['App\Middleware\ConfigLoader', [['../app/config.php', 'not found']]],
-    ['App\Middleware\ServiceContainer', [['../app/services.php', 'not found']]],
+    ['App\Middleware\ServiceContainer', ['../app/services-map.php', ['../app/services.php', 'not found']]],
     ['App\Middleware\TemplateFolders', [['../app/views.php', 'not found']]],
     ['App\Middleware\RouteContainer', [['../app/routes.php', 'not found']]],
     $mid1,
@@ -138,10 +136,6 @@ $app = new TornadoHttp([
 ]);
 
 $app->add($mid3);
-
-$app->setConfig(new Config());
-
-$app->setDI(new Container());
 
 $app->setExceptionHandler(function (RequestInterface $request, ResponseInterface $response, callable $next, \Exception $e) {
 
@@ -152,8 +146,5 @@ $app->setExceptionHandler(function (RequestInterface $request, ResponseInterface
     return $response;
 
 });
-
-$conf = $app->getConfig();
-$conf['hello'] = ' config value HELLO ';
 
 $app(ServerRequestFactory::fromGlobals(), new Response());
