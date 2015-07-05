@@ -3,7 +3,6 @@ namespace App\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use League\Container\Container;
 
 /**
  * Clase Middleware que registra el contenedor de dependencias de la Aplicación y sus Servicios
@@ -13,11 +12,6 @@ use League\Container\Container;
 class ServiceContainer {
 
     /**
-     * @var string Array de configuración de servicios
-     */
-    private $config;
-
-    /**
      * @var array Archivos con servicios
      */
     private $files;
@@ -25,12 +19,10 @@ class ServiceContainer {
     /**
      * Constructor
      *
-     * @param string $pConfig Archivo de configuración estático
      * @param array $pFiles Archivos de servicios definidos programáticamente
      */
-    public function __construct($pConfig, array $pFiles)
+    public function __construct(array $pFiles)
     {
-        $this->config = $pConfig;
         $this->files  = $pFiles;
     }
 
@@ -46,14 +38,10 @@ class ServiceContainer {
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
 
-        $container = null;
+        $container =  $pNext->getDI();
 
-        if ($this->config && file_exists($this->config)) {
-            $container = new Container([
-                'di' => require $this->config
-            ]);
-        } else {
-            $container = new Container();
+        if (! $container) {
+            return $pNext($pRequest, $pResponse);
         }
 
         foreach ($this->files as $file) {
@@ -63,8 +51,6 @@ class ServiceContainer {
             }
 
         }
-
-        $pNext->setDI($container);
 
         return $pNext($pRequest, $pResponse);
     }

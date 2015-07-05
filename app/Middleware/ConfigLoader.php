@@ -3,7 +3,6 @@ namespace App\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Provider\Helper\Config;
 
 /**
  * Clase Middleware que registra y carga la configuración de la Aplicación
@@ -39,7 +38,11 @@ class ConfigLoader {
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
 
-        $config = new Config();
+        $config = $pNext->getConfig();
+
+        if (! $config) {
+            return $pNext($pRequest, $pResponse);
+        }
 
         foreach ($this->files as $file) {
 
@@ -48,8 +51,6 @@ class ConfigLoader {
             }
 
         }
-
-        $pNext->setConfig($config);
 
         return $pNext($pRequest, $pResponse);
     }
