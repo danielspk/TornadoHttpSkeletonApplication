@@ -7,6 +7,11 @@ use App\Provider\Helper\Config;
 use League\Container\Container;
 use League\Plates\Engine;
 
+/**
+ * Clase padre para las Acciones de los Middlewares de Rutas
+ *
+ * @package App\Provider\RouteAction
+ */
 abstract class RouteAction implements RouteActionInterface {
 
     /**
@@ -25,10 +30,12 @@ abstract class RouteAction implements RouteActionInterface {
     protected $view;
 
     /**
-     * @param RequestInterface $pRequest
-     * @param ResponseInterface $pResponse
-     * @param callable $pNext
-     * @return mixed
+     * Método invocable por la ruta despachada
+     *
+     * @param RequestInterface $pRequest Petición
+     * @param ResponseInterface $pResponse Respuesta
+     * @param callable $pNext Próximo Middleware
+     * @return ResponseInterface
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {

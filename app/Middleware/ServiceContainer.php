@@ -4,6 +4,11 @@ namespace App\Middleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Clase Middleware que registra los servicios en el contenedor de dependencias de la Aplicación
+ *
+ * @package App\Middleware
+ */
 class ServiceContainer {
 
     /**

@@ -4,6 +4,11 @@ namespace App\Middleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Clase Middleware que registra las rutas de los archivos de vistas de los Módulos de la Aplicación
+ *
+ * @package App\Middleware
+ */
 class TemplateFolders {
 
     /**

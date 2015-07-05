@@ -8,6 +8,11 @@ use FastRoute;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
+/**
+ * Clase Middleware que registra las rutas en su contenedor y despacha la petición a una ruta
+ *
+ * @package App\Middleware
+ */
 class RouteContainer {
 
     /**
@@ -26,7 +31,7 @@ class RouteContainer {
     }
 
     /**
-     * Invocación de registración de contenedor de rutas
+     * Invocación de registración de contenedor de rutas y despacho de petición
      *
      * @param RequestInterface $pRequest Petición
      * @param ResponseInterface $pResponse Respuesta
@@ -79,7 +84,7 @@ class RouteContainer {
     }
 
     /**
-     * Registra los middlewares de la ruta mapeada detras del indice actual de la cola de ejecución
+     * Método que registra los middlewares de la ruta despachada detras del indice actual de la cola de ejecución
      *
      * @param TornadoHttp $pApp
      * @param array $pHandler

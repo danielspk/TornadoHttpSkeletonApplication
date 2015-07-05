@@ -1,6 +1,6 @@
 /.DS_Store
 /.idea/
 /nbproject/
-/test/phpunit.phar
 /vendor/
 /composer.lock
+/phpunit.phar

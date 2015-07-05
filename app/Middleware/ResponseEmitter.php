@@ -5,6 +5,11 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\SapiEmitter;
 
+/**
+ * Clase Middleware que emite la respuesta de la petición
+ *
+ * @package App\Middleware
+ */
 class ResponseEmitter {
 
     /**

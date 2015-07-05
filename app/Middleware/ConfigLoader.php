@@ -4,6 +4,11 @@ namespace App\Middleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Clase Middleware que carga la configuración de la Aplicación
+ *
+ * @package App\Middleware
+ */
 class ConfigLoader {
 
     /**
@@ -24,7 +29,7 @@ class ConfigLoader {
     /**
      * Invocación de carga de archivos de configuración
      *
-     * @param RequestInterface $pRequest Peticion
+     * @param RequestInterface $pRequest Petición
      * @param ResponseInterface $pResponse Respuesta
      * @param callable $pNext Próximo Middleware
      * @return ResponseInterface

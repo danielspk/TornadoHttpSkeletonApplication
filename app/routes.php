@@ -3,6 +3,10 @@
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Rutas de la Aplicación
+ */
+
 return [
     ['GET', '/', [
         'App\Modules\Application\RouteAction\IndexAction',

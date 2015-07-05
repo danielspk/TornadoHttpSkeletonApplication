@@ -10,7 +10,7 @@
          syntaxCheck="false"
          bootstrap="test/bootstrap.php">
     <testsuites>
-        <testsuite name="Tornado Http Tests">
+        <testsuite name="Tornado Http Skeleton Application Tests">
             <directory>./test</directory>
         </testsuite>
     </testsuites>

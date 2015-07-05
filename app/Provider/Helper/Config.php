@@ -1,6 +1,11 @@
 <?php
 namespace App\Provider\Helper;
 
+/**
+ * Clase para gestionar la configuración de la Aplicación
+ *
+ * @package App\Provider\Helper
+ */
 class Config implements \ArrayAccess {
 
     /**
@@ -28,8 +33,8 @@ class Config implements \ArrayAccess {
 
     /**
      * Método que setea valores de configuración (Interfase \ArrayAccess)
-     * @param  string $pName  Identificador
-     * @param  mixed  $pValue Valor
+     * @param string $pName  Identificador
+     * @param mixed  $pValue Valor
      * @throws \InvalidArgumentException
      */
     public function offsetSet($pName, $pValue)
@@ -43,7 +48,7 @@ class Config implements \ArrayAccess {
 
     /**
      * Método que evalua si un identificador de configuración existe (Interfase \ArrayAccess)
-     * @param  string $pName Identificador
+     * @param string $pName Identificador
      * @return bool
      */
     public function offsetExists($pName)
@@ -62,7 +67,7 @@ class Config implements \ArrayAccess {
 
     /**
      * Método que devuelve valores de configuración (Interfase \ArrayAccess)
-     * @param  string $pName Identificador
+     * @param string $pName Identificador
      * @return mixed
      */
     public function offsetGet($pName)

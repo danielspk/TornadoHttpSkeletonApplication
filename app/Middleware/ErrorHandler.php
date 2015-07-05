@@ -6,10 +6,15 @@ use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\SapiEmitter;
 
+/**
+ * Clase Middleware que gestiona las excepciones de la Aplicación
+ *
+ * @package App\Middleware
+ */
 class ErrorHandler {
 
     /**
-     * Invocación de petición/respuesta de inicio de aplicación
+     * Invocación de gestión de excepciones
      *
      * @param RequestInterface $pRequest Peticion
      * @param ResponseInterface $pResponse Respuesta
