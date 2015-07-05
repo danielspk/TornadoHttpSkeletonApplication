@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware\Helper;
+namespace App\Provider\Helper;
 
 class Config implements \ArrayAccess {
 

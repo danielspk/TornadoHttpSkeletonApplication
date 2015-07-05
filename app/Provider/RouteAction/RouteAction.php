@@ -1,26 +1,28 @@
 <?php
-namespace App\Modules\Core\RouteAction;
+namespace App\Provider\RouteAction;
 
-use DMS\TornadoHttp\TornadoHttp;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use App\Provider\Helper\Config;
+use League\Container\Container;
+use League\Plates\Engine;
 
 abstract class RouteAction implements RouteActionInterface {
 
     /**
-     * @var TornadoHttp
+     * @var Config
      */
-    protected $app;
+    protected $config;
 
     /**
-     * @var RequestInterface
+     * @var Container
      */
-    protected $request;
+    protected $container;
 
     /**
-     * @var ResponseInterface
+     * @var Engine
      */
-    protected $response;
+    protected $view;
 
     /**
      * @param RequestInterface $pRequest
@@ -31,12 +33,12 @@ abstract class RouteAction implements RouteActionInterface {
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        $this->app = $pNext;
-        $this->request = $pRequest;
-        $this->response = $pResponse;
+        $this->config = $pNext->getConfig();
+        $this->container = $pNext->getDI();
+        $this->view = $this->container->get('plates');
 
-        $this->run();
+        $response = $this->run($pRequest, $pResponse);
 
-        return $pNext($this->request, $this->response);
+        return $pNext($pRequest, $response);
     }
 }

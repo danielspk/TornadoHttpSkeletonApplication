@@ -25,18 +25,20 @@
         "danielspk/tornadohttp": "~0.0",
         "zendframework/zend-diactoros" : "~1.0",
         "nikic/fast-route" : "~0.0",
-        "pimple/pimple" : "~3.0",
+        "league/container" : "~1.0",
         "league/plates": "3.*"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
     },
+    "suggest": {
+        "cakephp/orm": "~3.0 - Flexible and powerful ORM implementing a data-mapper pattern",
+        "monolog/monolog": "~1.0 - Sends your logs to files, sockets, inboxes, databases and various web services",
+        "owasp/phprbac": "~2.0 - It provides developers with NIST Level 2 Standard Role Based Access Control"
+    },
     "autoload": {
         "psr-4": {
-            "App\\": "app/src/"
+            "App\\": "app/"
         }
-    },
-    "config": {
-        "vendor-dir": "app/vendor"
     }
 }

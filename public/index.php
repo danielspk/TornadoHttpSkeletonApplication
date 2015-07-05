@@ -6,9 +6,10 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Response;
-use Pimple\Container;
+use League\Container\Container;
+use App\Provider\Helper\Config;
 
-require '../app/vendor/autoload.php';
+require '../vendor/autoload.php';
 
 $mid1 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     $response->getBody()->write(' Middleware 1 ');
@@ -16,12 +17,14 @@ $mid1 = function (RequestInterface $request, ResponseInterface $response, callab
 };
 
 $mid2 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
+    /** @var \Psr\Http\Message\ResponseInterface $response */
     $response = $next($request, $response);
     $response->getBody()->write(' Middleware 2 ');
     return $response;
 };
 
 $mid3 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
+    /** @var \DMS\TornadoHttp\TornadoHttp $next */
     $conf = $next->getConfig();
     $response->getBody()->write(' Middleware 3 ' . $conf['hello'] . ' ');
 
@@ -33,16 +36,17 @@ $mid3 = function (RequestInterface $request, ResponseInterface $response, callab
 $app = new TornadoHttp([
     'App\Middleware\ResponseEmitter',
     'App\Middleware\ErrorHandler',
-    ['App\Middleware\ConfigLoader', [['../app/src/config.php', 'not found']]],
-    ['App\Middleware\ServiceContainer', [['../app/src/services.php', 'not found']]],
-    ['App\Middleware\RouteContainer', [['../app/src/routes.php', 'not found']]],
+    ['App\Middleware\ConfigLoader', [['../app/config.php', 'not found']]],
+    ['App\Middleware\ServiceContainer', [['../app/services.php', 'not found']]],
+    ['App\Middleware\TemplateFolders', [['../app/views.php', 'not found']]],
+    ['App\Middleware\RouteContainer', [['../app/routes.php', 'not found']]],
     $mid1,
     $mid2
 ]);
 
 $app->add($mid3);
 
-$app->setConfig(new Middleware\Helper\Config());
+$app->setConfig(new Config());
 
 $app->setDI(new Container());
 

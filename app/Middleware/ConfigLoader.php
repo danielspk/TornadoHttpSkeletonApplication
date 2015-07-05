@@ -32,6 +32,7 @@ class ConfigLoader {
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
+        /** @var \App\Provider\Helper\Config $config */
         $config = $pNext->getConfig();
 
         if (! $config instanceof \ArrayAccess) {
