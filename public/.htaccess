@@ -1,7 +1,4 @@
 Options -Indexes
-<FilesMatch "^\.md|.xml|.json">
-    Require all denied
-</FilesMatch>
 <IfModule mod_rewrite.c>
     RewriteEngine on
     RewriteBase /tornadohttpskeletonapplication/public/

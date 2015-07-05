@@ -55,7 +55,7 @@ class RouteContainer {
 
         // se elimina el document root del path del request para que coincida con la ruta
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        $uri = '/' . str_replace($pNext->getConfig()['document.root'], '', $pRequest->getUri()->getPath());
+        $uri = '/' . str_ireplace($pNext->getConfig()['document.root'], '', $pRequest->getUri()->getPath());
         $route = $dispatcher->dispatch($pRequest->getMethod(), $uri);
 
         switch ($route[0]) {

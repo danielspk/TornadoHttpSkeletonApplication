@@ -26,12 +26,13 @@ class ErrorHandler {
 
         } catch (\Exception $e) {
 
-            // se determina si el usuario registro un middleware de errores personalizado ...
-            if ($pNext->getExceptionHandler()) {
+            $exception = $pNext->getExceptionHandler();
 
-                //$response = call_user_func_array($pNext->getExceptionHandler(), [$pRequest, $pResponse, $pNext, $e]); // ANALIZAR USO SIN call_user_func_array
-                $handler = $pNext->getExceptionHandler();
-                $response = $handler($pRequest, $pResponse, $pNext, $e);
+            // se determina si el usuario registro un middleware de errores personalizado ...
+            if ($exception) {
+
+                $handler = $pNext->resolveCallable($exception);
+                $response = $exception($pRequest, $pResponse, $pNext, $e);
 
             } else {
 
