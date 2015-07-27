@@ -47,18 +47,8 @@ class TemplateFolders {
         /** @var \League\Plates\Engine $plates */
         $plates = $container->get('plates');
 
-        foreach ($this->files as $file) {
-
-            if (file_exists($file)) {
-
-                $folders = require $file;
-
-                foreach($folders as $key => $folder) {
-                    $plates->addFolder($key, $folder);
-                }
-
-            }
-
+        foreach($this->files as $key => $folder) {
+            $plates->addFolder($key, $folder);
         }
 
         return $pNext($pRequest, $pResponse);

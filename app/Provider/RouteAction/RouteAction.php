@@ -3,7 +3,6 @@ namespace App\Provider\RouteAction;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Provider\Helper\Config;
 use League\Container\Container;
 use League\Plates\Engine;
 
@@ -13,11 +12,6 @@ use League\Plates\Engine;
  * @package App\Provider\RouteAction
  */
 abstract class RouteAction implements RouteActionInterface {
-
-    /**
-     * @var Config
-     */
-    protected $config;
 
     /**
      * @var Container
@@ -40,7 +34,6 @@ abstract class RouteAction implements RouteActionInterface {
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        $this->config = $pNext->getConfig();
         $this->container = $pNext->getDI();
         $this->view = $this->container->get('plates');
 

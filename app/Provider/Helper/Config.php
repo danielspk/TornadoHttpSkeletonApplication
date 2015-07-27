@@ -16,10 +16,11 @@ class Config implements \ArrayAccess {
 
     /**
      * Método constructor
+     * @param array $pArray
      */
-    public function __construct()
+    public function __construct($pArray = [])
     {
-        $this->config = [];
+        $this->config = $pArray;
     }
 
     /**

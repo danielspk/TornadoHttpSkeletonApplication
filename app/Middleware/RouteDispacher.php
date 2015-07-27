@@ -13,21 +13,21 @@ use FastRoute\RouteCollector;
  *
  * @package App\Middleware
  */
-class RouteContainer {
+class RouteDispacher {
 
     /**
-     * @var array Archivos de rutas
+     * @var array Definición de rutas
      */
-    private $files;
+    private $routes;
 
     /**
      * Constructor
      *
-     * @param array $pFiles Archivos de rutas
+     * @param array $pRoutes Definición de rutas
      */
-    public function __construct(array $pFiles)
+    public function __construct(array $pRoutes)
     {
-        $this->files = $pFiles;
+        $this->routes = $pRoutes;
     }
 
     /**
@@ -42,25 +42,19 @@ class RouteContainer {
     {
         $dispatcher = FastRoute\simpleDispatcher(function(RouteCollector $r) {
 
-            foreach ($this->files as $file) {
-
-                if (file_exists($file)) {
-
-                    $routes = require $file;
-
-                    foreach($routes as $route) {
-                        $r->addRoute($route[0], $route[1], $route[2]);
-                    }
-
-                }
-
+            foreach($this->routes as $route) {
+                $r->addRoute($route[0], $route[1], $route[2]);
             }
 
         });
 
         // se elimina el document root del path del request para que coincida con la ruta
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        $uri = '/' . str_ireplace($pNext->getConfig()['document.root'], '', $pRequest->getUri()->getPath());
+        /** @var \League\Container\Container $container */
+        /** @var \App\Provider\Helper\Config $config */
+        $container = $pNext->getDI();
+        $config = $container->get('config');
+        $uri = '/' . str_ireplace($config['document.root'], '', $pRequest->getUri()->getPath());
         $route = $dispatcher->dispatch($pRequest->getMethod(), $uri);
 
         switch ($route[0]) {

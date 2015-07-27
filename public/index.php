@@ -100,7 +100,6 @@ use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Response;
 use League\Container\Container;
-use App\Provider\Helper\Config;
 
 require '../vendor/autoload.php';
 
@@ -118,7 +117,7 @@ $mid2 = function (RequestInterface $request, ResponseInterface $response, callab
 
 $mid3 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     /** @var \DMS\TornadoHttp\TornadoHttp $next */
-    $conf = $next->getConfig();
+    $conf = $next->getDI()->get('config');
     $response->getBody()->write(' Middleware 3 ' . $conf['mode'] . ' ');
 
     //throw new \Exception('Custom Error');
@@ -126,35 +125,22 @@ $mid3 = function (RequestInterface $request, ResponseInterface $response, callab
     return $next($request, $response);
 };
 
-// Nota: de requerirse el contenedor puede declararse fuera y ser pasado al constructor de un middleware
+$container = new Container([
+    'di' => require '../app/services.php'
+]);
 
 $app = new TornadoHttp(
     [
         'App\Middleware\ResponseEmitter',
         'App\Middleware\ErrorHandler',
-        ['App\Middleware\ConfigLoader', [['../app/config.php', 'not found']]],
-        ['App\Middleware\ServiceContainer', [['../app/services.php', 'not found']]],
-        ['App\Middleware\TemplateFolders', [['../app/views.php', 'not found']]],
-        ['App\Middleware\RouteContainer', [['../app/routes.php', 'not found']]],
+        ['App\Middleware\TemplateFolders', [require '../app/views.php']],
+        ['App\Middleware\RouteDispacher', [require '../app/routes.php']],
         $mid1,
         $mid2
     ],
-    new Container([
-        'di' => require '../app/services-map.php'
-    ]),
-    new Config()
+    $container
 );
 
 $app->add($mid3);
-
-$app->setExceptionHandler(function (RequestInterface $request, ResponseInterface $response, callable $next, \Exception $e) {
-
-    $response = new Response();
-    $response = $response->withStatus(500);
-    $response->getBody()->write('Personal Error: ' . $e->getMessage() . ', ' . $e->getFile());
-
-    return $response;
-
-});
 
 $app(ServerRequestFactory::fromGlobals(), new Response());
