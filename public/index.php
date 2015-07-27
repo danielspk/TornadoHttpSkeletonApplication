@@ -99,7 +99,8 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Response;
-use League\Container\Container;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\Config;
 
 require '../vendor/autoload.php';
 
@@ -125,15 +126,16 @@ $mid3 = function (RequestInterface $request, ResponseInterface $response, callab
     return $next($request, $response);
 };
 
-$container = new Container([
-    'di' => require '../app/services.php'
-]);
+$container = new ServiceManager(
+    new Config(
+        require '../app/services.php'
+    )
+);
 
 $app = new TornadoHttp(
     [
         'App\Middleware\ResponseEmitter',
         'App\Middleware\ErrorHandler',
-        ['App\Middleware\TemplateFolders', [require '../app/views.php']],
         ['App\Middleware\RouteDispacher', [require '../app/routes.php']],
         $mid1,
         $mid2
