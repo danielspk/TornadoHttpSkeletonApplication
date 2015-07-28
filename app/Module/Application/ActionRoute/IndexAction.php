@@ -24,12 +24,12 @@ class IndexAction extends ActionRoute {
         /** @var \DateTime $date */
         $date = $this->container->get('DateTime');
 
-        $pResponse->getBody()->write(' Index Action ' . $date->format('d/m/Y'));
+        $pResponse->getBody()->write('Action Middleware 1 process - date:' . $date->format('d/m/Y') . '<br />');
 
         $view = $this->container->get('ViewModel')
             ->setTemplate('example.php')
             ->setVariables([
-                'hello' => 'Hello Template ViewModel Zend'
+                'hello' => 'Hello Template ViewModel'
             ]);
 
         $pResponse->getBody()->write($this->view->render($view));

@@ -11,11 +11,11 @@ return [
     ['GET', '/', [
         'App\Module\Application\ActionRoute\IndexAction',
         function(RequestInterface $request, ResponseInterface $response, callable $next){
-            $response->getBody()->write('Ruta Principal 1');
+            $response->getBody()->write('Action Middleware 2 process<br />');
             return $next($request, $response);
         },
         function(RequestInterface $request, ResponseInterface $response, callable $next){
-            $response->getBody()->write('Ruta Principal 2');
+            $response->getBody()->write('Action Middleware 3 process<br />');
             return $next($request, $response);
         }
     ]],

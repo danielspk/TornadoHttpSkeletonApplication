@@ -105,21 +105,21 @@ use Zend\ServiceManager\Config;
 require '../vendor/autoload.php';
 
 $mid1 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
-    $response->getBody()->write(' Middleware 1 ');
+    $response->getBody()->write('Middleware 1 process<br />');
     return $next($request, $response);
 };
 
 $mid2 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     /** @var \Psr\Http\Message\ResponseInterface $response */
     $response = $next($request, $response);
-    $response->getBody()->write(' Middleware 2 ');
+    $response->getBody()->write('Middleware 2 process<br />');
     return $response;
 };
 
 $mid3 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     /** @var \DMS\TornadoHttp\TornadoHttp $next */
     $conf = $next->getDI()->get('Config');
-    $response->getBody()->write(' Middleware 3 ' . $conf->mode . ' ');
+    $response->getBody()->write('Middleware 3 process - Application mode: ' . $conf->mode . '<br />');
 
     //throw new \Exception('Custom Error');
 

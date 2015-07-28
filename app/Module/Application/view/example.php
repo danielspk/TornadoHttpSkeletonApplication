@@ -5,6 +5,6 @@
     <title></title>
 </head>
 <body>
-    <h1>Example <?php echo $hello ?>!!!!</h1>
+    <h1>Middleware <?php echo $hello ?>!!!!</h1>
 </body>
 </html>
