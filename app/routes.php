@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 
 return [
     ['GET', '/', [
-        'App\Module\Application\RouteAction\IndexAction',
+        'App\Module\Application\ActionRoute\IndexAction',
         function(RequestInterface $request, ResponseInterface $response, callable $next){
             $response->getBody()->write('Ruta Principal 1');
             return $next($request, $response);

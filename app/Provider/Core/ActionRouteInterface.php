@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @package App\Provider\Core
  */
-interface RouteActionInterface {
+interface ActionRouteInterface {
     /**
      * Método invocable por la ruta despachada
      *

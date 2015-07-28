@@ -1,16 +1,16 @@
 <?php
-namespace App\Module\Application\RouteAction;
+namespace App\Module\Application\ActionRoute;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Provider\Core\RouteAction;
+use App\Provider\Core\ActionRoute;
 
 /**
  * Class de Ejemplo de Acción
  *
- * @package App\Module\Application\RouteAction
+ * @package App\Module\Application\ActionRoute
  */
-class IndexAction extends RouteAction {
+class IndexAction extends ActionRoute {
 
     /**
      * Método con lógica de la acción

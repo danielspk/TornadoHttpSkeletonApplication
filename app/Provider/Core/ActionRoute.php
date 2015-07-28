@@ -11,7 +11,7 @@ use Zend\View\Renderer\PhpRenderer;
  *
  * @package App\Provider\Core
  */
-abstract class RouteAction implements RouteActionInterface {
+abstract class ActionRoute implements ActionRouteInterface {
 
     /**
      * @var ContainerInterface

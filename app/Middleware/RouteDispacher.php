@@ -63,7 +63,7 @@ class RouteDispacher {
             case Dispatcher::METHOD_NOT_ALLOWED:
                 return $pResponse->withStatus(405); // Mejoras posibles: crear tipo de Excepción 405
             case Dispatcher::FOUND:
-                $handler = $route[1];
+                $handlers = $route[1];
                 $vars = $route[2];
                 break;
         }
@@ -72,7 +72,7 @@ class RouteDispacher {
             $pRequest = $pRequest->withAttribute($name, $value);
         }
 
-        $this->registerRoute($pNext, $handler);
+        $this->registerRoute($pNext, $handlers);
 
         return $pNext($pRequest, $pResponse);
     }
@@ -81,14 +81,14 @@ class RouteDispacher {
      * Método que registra los middlewares de la ruta despachada detras del indice actual de la cola de ejecución
      *
      * @param TornadoHttp $pApp
-     * @param array $pHandler
+     * @param array $pHandlers
      */
-    public function registerRoute($pApp, $pHandler)
+    public function registerRoute($pApp, $pHandlers)
     {
         $middlewares = $pApp->getMiddlewares();
         $index = $middlewares->key();
 
-        foreach ($pHandler as $middlewareRoute) {
+        foreach ($pHandlers as $middlewareRoute) {
             $index++;
             $middlewares->add($index, $middlewareRoute);
         }
