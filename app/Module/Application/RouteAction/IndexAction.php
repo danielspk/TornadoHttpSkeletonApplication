@@ -22,10 +22,18 @@ class IndexAction extends RouteAction {
     public function run(RequestInterface $pRequest, ResponseInterface $pResponse)
     {
         /** @var \DateTime $date */
-        $date = $this->container->get('datetime');
+        $date = $this->container->get('DateTime');
 
         $pResponse->getBody()->write(' Index Action ' . $date->format('d/m/Y'));
-        $pResponse->getBody()->write($this->view->render('app::example', ['hello' => 'Hello Template']));
+
+        $view = $this->container->get('ViewModel')
+            ->setTemplate('example.php')
+            ->setVariables([
+                'hello' => 'Hello Template ViewModel Zend'
+            ]);
+
+        $pResponse->getBody()->write($this->view->render($view));
+
         return $pResponse;
     }
 

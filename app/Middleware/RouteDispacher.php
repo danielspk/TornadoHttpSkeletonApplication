@@ -50,10 +50,10 @@ class RouteDispacher {
 
         // se elimina el document root del path del request para que coincida con la ruta
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        /** @var \League\Container\Container $container */
-        /** @var \App\Provider\Helper\Config $config */
+        /** @var \Interop\Container\ContainerInterface $container */
+        /** @var \Zend\Config\Config $config */
         $container = $pNext->getDI();
-        $config = $container->get('config');
+        $config = $container->get('Config');
         $uri = '/' . str_ireplace($config['document.root'], '', $pRequest->getUri()->getPath());
         $route = $dispatcher->dispatch($pRequest->getMethod(), $uri);
 
@@ -72,7 +72,7 @@ class RouteDispacher {
             $pRequest = $pRequest->withAttribute($name, $value);
         }
 
-        $this->executeRoute($pNext, $handler);
+        $this->registerRoute($pNext, $handler);
 
         return $pNext($pRequest, $pResponse);
     }
@@ -82,9 +82,8 @@ class RouteDispacher {
      *
      * @param TornadoHttp $pApp
      * @param array $pHandler
-     * @return ResponseInterface
      */
-    public function executeRoute($pApp, $pHandler)
+    public function registerRoute($pApp, $pHandler)
     {
         $middlewares = $pApp->getMiddlewares();
         $index = $middlewares->key();

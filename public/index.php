@@ -118,7 +118,7 @@ $mid2 = function (RequestInterface $request, ResponseInterface $response, callab
 
 $mid3 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     /** @var \DMS\TornadoHttp\TornadoHttp $next */
-    $conf = $next->getDI()->get('config');
+    $conf = $next->getDI()->get('Config');
     $response->getBody()->write(' Middleware 3 ' . $conf->mode . ' ');
 
     //throw new \Exception('Custom Error');

@@ -4,7 +4,7 @@ namespace App\Provider\Core;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Interop\Container\ContainerInterface;
-use League\Plates\Engine;
+use Zend\View\Renderer\PhpRenderer;
 
 /**
  * Clase padre para las Acciones de los Middlewares de Rutas
@@ -19,7 +19,7 @@ abstract class RouteAction implements RouteActionInterface {
     protected $container;
 
     /**
-     * @var Engine
+     * @var PhpRenderer
      */
     protected $view;
 
@@ -35,7 +35,7 @@ abstract class RouteAction implements RouteActionInterface {
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
         $this->container = $pNext->getDI();
-        $this->view = $this->container->get('plates');
+        $this->view = $this->container->get('Renderer');
 
         $response = $this->run($pRequest, $pResponse);
 
