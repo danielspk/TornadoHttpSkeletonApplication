@@ -1,20 +1,20 @@
 <?php
-namespace App\Provider\RouteAction;
+namespace App\Provider\Core;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use League\Container\Container;
+use Interop\Container\ContainerInterface;
 use League\Plates\Engine;
 
 /**
  * Clase padre para las Acciones de los Middlewares de Rutas
  *
- * @package App\Provider\RouteAction
+ * @package App\Provider\Core
  */
 abstract class RouteAction implements RouteActionInterface {
 
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 

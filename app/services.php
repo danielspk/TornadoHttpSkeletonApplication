@@ -1,12 +1,16 @@
 <?php
 
+/**
+ * Servicios de la Aplicación
+ */
+
 return [
     'invokables' => array(
         'datetime' => '\DateTime',
     ),
     'factories' => array(
         'config' =>  function($sm) {
-            return new \App\Provider\Helper\Config(require __DIR__ . '/config.php');
+            return new \Zend\Config\Config(require __DIR__ . '/config.php');
         },
         'plates' =>  function($sm) {
             $plates = new \League\Plates\Engine();

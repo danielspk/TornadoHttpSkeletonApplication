@@ -59,9 +59,9 @@ class RouteDispacher {
 
         switch ($route[0]) {
             case Dispatcher::NOT_FOUND:
-                return $pResponse->withStatus(404); //crear error
+                return $pResponse->withStatus(404); // Mejoras posibles: crear tipo de Excepción 404
             case Dispatcher::METHOD_NOT_ALLOWED:
-                return $pResponse->withStatus(405); // crear error
+                return $pResponse->withStatus(405); // Mejoras posibles: crear tipo de Excepción 405
             case Dispatcher::FOUND:
                 $handler = $route[1];
                 $vars = $route[2];

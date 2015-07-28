@@ -25,6 +25,7 @@
         "danielspk/tornadohttp": "~1.0",
         "zendframework/zend-diactoros": "~1.0",
         "zendframework/zend-servicemanager": "~2.0",
+        "zendframework/zend-config": "~2.0",
         "nikic/fast-route": "~0.0",
         "league/plates": "3.*"
     },

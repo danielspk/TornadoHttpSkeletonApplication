@@ -28,6 +28,8 @@ class ErrorHandler {
 
         } catch (\Exception $e) {
 
+            // Mejoras posibles: Según tipo de Excepción devolver distintos códigos de status
+            
             $response = new Response();
             $response = $response->withStatus(500);
             $response->getBody()->write('Personal Error: ' . $e->getMessage() . ', ' . $e->getFile());
