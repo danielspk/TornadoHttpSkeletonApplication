@@ -72,7 +72,7 @@ class RouteDispacher {
             $pRequest = $pRequest->withAttribute($name, $value);
         }
 
-        $this->registerRoute($pNext, $handlers);
+        $this->registerMiddlewareRoute($pNext, $handlers);
 
         return $pNext($pRequest, $pResponse);
     }
@@ -83,7 +83,7 @@ class RouteDispacher {
      * @param TornadoHttp $pApp
      * @param array $pHandlers
      */
-    public function registerRoute($pApp, $pHandlers)
+    public function registerMiddlewareRoute($pApp, $pHandlers)
     {
         $middlewares = $pApp->getMiddlewares();
         $index = $middlewares->key();
