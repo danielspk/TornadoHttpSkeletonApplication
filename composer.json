@@ -24,10 +24,10 @@
         "php": ">=5.4.0",
         "danielspk/tornadohttp": "~1.0",
         "zendframework/zend-diactoros": "~1.0",
-        "zendframework/zend-servicemanager": "~2.0",
-        "zendframework/zend-config": "~2.0",
-        "zendframework/zend-view": "~2.0",
-        "zendframework/zend-filter": "~2.0",
+        "zendframework/zend-servicemanager": "~2.5",
+        "zendframework/zend-config": "~2.5",
+        "zendframework/zend-view": "~2.5",
+        "zendframework/zend-filter": "~2.5",
         "nikic/fast-route": "~0.0"
     },
     "require-dev": {
