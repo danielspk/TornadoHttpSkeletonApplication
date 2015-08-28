@@ -1,5 +1,5 @@
 <?php
-namespace App\Provider\Core;
+namespace App\Provider\MiddlewareRoute;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -7,9 +7,9 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Interface para las Acciones de los Middlewares de Rutas
  *
- * @package App\Provider\Core
+ * @package App\Provider\MiddlewareRoute
  */
-interface ActionRouteInterface {
+interface MiddlewareRouteInterface {
     /**
      * Método invocable por la ruta despachada
      *

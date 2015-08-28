@@ -1,16 +1,16 @@
 <?php
-namespace App\Module\Application\ActionRoute;
+namespace App\Module\Application\Middleware;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Provider\Core\ActionRoute;
+use App\Provider\MiddlewareRoute\MiddlewareRoute;
 
 /**
- * Class de Ejemplo de Acción
+ * Clase de Ejemplo de Middleware de Ruta
  *
- * @package App\Module\Application\ActionRoute
+ * @package App\Module\Application\Middleware
  */
-class IndexAction extends ActionRoute {
+class IndexRoute extends MiddlewareRoute {
 
     /**
      * Método con lógica de la acción

@@ -1,5 +1,5 @@
 <?php
-namespace App\Provider\Core;
+namespace App\Provider\MiddlewareRoute;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -9,9 +9,9 @@ use Zend\View\Renderer\PhpRenderer;
 /**
  * Clase padre para las Acciones de los Middlewares de Rutas
  *
- * @package App\Provider\Core
+ * @package App\Provider\MiddlewareRoute
  */
-abstract class ActionRoute implements ActionRouteInterface {
+abstract class MiddlewareRoute implements MiddlewareRouteInterface {
 
     /**
      * @var ContainerInterface

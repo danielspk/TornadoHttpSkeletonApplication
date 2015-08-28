@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 
 return [
     ['GET', '/', [
-        'App\Module\Application\ActionRoute\IndexAction',
+        'App\Module\Application\Middleware\IndexRoute',
         function(RequestInterface $request, ResponseInterface $response, callable $next){
             $response->getBody()->write('Action Middleware 2 process<br />');
             return $next($request, $response);
