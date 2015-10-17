@@ -6,9 +6,9 @@ use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
 
 /**
- * Clase Middleware que gestiona las excepciones de la Aplicación
+ * Clase Action que gestiona las excepciones de la Aplicación
  *
- * @package App\Middleware
+ * @package App\Action
  */
 class ErrorHandler {
 
@@ -17,7 +17,7 @@ class ErrorHandler {
      *
      * @param RequestInterface $pRequest Peticion
      * @param ResponseInterface $pResponse Respuesta
-     * @param callable $pNext Próximo Middleware
+     * @param callable $pNext Próximo Action
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)

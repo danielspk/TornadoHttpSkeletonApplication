@@ -1,16 +1,17 @@
 <?php
-namespace App\Module\Application\Middleware;
+namespace App\Module\Application\Action;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Provider\MiddlewareRoute\MiddlewareRoute;
+use App\Middleware\ADR\MiddlewareAction;
 
 /**
- * Clase de Ejemplo de Middleware de Ruta
+ * Clase de Ejemplo de Action de Ruta
  *
- * @package App\Module\Application\Middleware
+ * @package App\Module\Application\Action
  */
-class IndexRoute extends MiddlewareRoute {
+class IndexAction extends MiddlewareAction
+{
 
     /**
      * Método con lógica de la acción
@@ -24,7 +25,7 @@ class IndexRoute extends MiddlewareRoute {
         /** @var \DateTime $date */
         $date = $this->container->get('DateTime');
 
-        $pResponse->getBody()->write('Action Middleware 1 process - date:' . $date->format('d/m/Y') . '<br />');
+        $pResponse->getBody()->write('Action Action 1 process - date:' . $date->format('d/m/Y') . '<br />');
 
         $view = $this->container->get('ViewModel')
             ->setTemplate('example.php')

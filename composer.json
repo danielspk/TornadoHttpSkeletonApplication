@@ -21,7 +21,7 @@
         "source": "https://github.com/danielspk/tornadohttpskeletonapplication"
     },
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "danielspk/tornadohttp": "~1.0",
         "zendframework/zend-diactoros": "~1.0",
         "zendframework/zend-servicemanager": "~2.0",

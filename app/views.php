@@ -5,5 +5,5 @@
  */
 
 return [
-    __DIR__ . '/Module/Application/views'
+    __DIR__ . '/Module/Application/Responder'
 ];

@@ -9,9 +9,9 @@ use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
 /**
- * Clase Middleware que registra las rutas en su contenedor y despacha la petición a una ruta
+ * Clase Action que registra las rutas en su contenedor y despacha la petición a una ruta
  *
- * @package App\Middleware
+ * @package App\Action
  */
 class RouteDispacher {
 
@@ -35,11 +35,15 @@ class RouteDispacher {
      *
      * @param RequestInterface $pRequest Petición
      * @param ResponseInterface $pResponse Respuesta
-     * @param callable $pNext Próximo Middleware
+     * @param callable $pNext Próximo Action
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
+        /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
+        /** @var \Interop\Container\ContainerInterface $container */
+        /** @var \Zend\Config\Config $config */
+
         $dispatcher = FastRoute\simpleDispatcher(function(RouteCollector $r) {
 
             foreach($this->routes as $route) {
@@ -49,9 +53,6 @@ class RouteDispacher {
         });
 
         // se elimina el document root del path del request para que coincida con la ruta
-        /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        /** @var \Interop\Container\ContainerInterface $container */
-        /** @var \Zend\Config\Config $config */
         $container = $pNext->getDI();
         $config = $container->get('Config');
         $uri = '/' . str_ireplace($config['document.root'], '', $pRequest->getUri()->getPath());
