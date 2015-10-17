@@ -9,25 +9,25 @@ use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
 /**
- * Clase Middleware que registra las rutas en su contenedor y despacha la petición a una ruta
+ * Clase Action que registra las rutas en su contenedor y despacha la petición a una ruta
  *
- * @package App\Middleware
+ * @package App\Action
  */
-class RouteContainer {
+class RouteDispacher {
 
     /**
-     * @var array Archivos de rutas
+     * @var array Definición de rutas
      */
-    private $files;
+    private $routes;
 
     /**
      * Constructor
      *
-     * @param array $pFiles Archivos de rutas
+     * @param array $pRoutes Definición de rutas
      */
-    public function __construct(array $pFiles)
+    public function __construct(array $pRoutes)
     {
-        $this->files = $pFiles;
+        $this->routes = $pRoutes;
     }
 
     /**
@@ -35,41 +35,36 @@ class RouteContainer {
      *
      * @param RequestInterface $pRequest Petición
      * @param ResponseInterface $pResponse Respuesta
-     * @param callable $pNext Próximo Middleware
+     * @param callable $pNext Próximo Action
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
+        /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
+        /** @var \Interop\Container\ContainerInterface $container */
+        /** @var \Zend\Config\Config $config */
+
         $dispatcher = FastRoute\simpleDispatcher(function(RouteCollector $r) {
 
-            foreach ($this->files as $file) {
-
-                if (file_exists($file)) {
-
-                    $routes = require $file;
-
-                    foreach($routes as $route) {
-                        $r->addRoute($route[0], $route[1], $route[2]);
-                    }
-
-                }
-
+            foreach($this->routes as $route) {
+                $r->addRoute($route[0], $route[1], $route[2]);
             }
 
         });
 
         // se elimina el document root del path del request para que coincida con la ruta
-        /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        $uri = '/' . str_ireplace($pNext->getConfig()['document.root'], '', $pRequest->getUri()->getPath());
+        $container = $pNext->getDI();
+        $config = $container->get('Config');
+        $uri = '/' . str_ireplace($config['document.root'], '', $pRequest->getUri()->getPath());
         $route = $dispatcher->dispatch($pRequest->getMethod(), $uri);
 
         switch ($route[0]) {
             case Dispatcher::NOT_FOUND:
-                return $pResponse->withStatus(404); //crear error
+                return $pResponse->withStatus(404); // Mejoras posibles: crear tipo de Excepción 404
             case Dispatcher::METHOD_NOT_ALLOWED:
-                return $pResponse->withStatus(405); // crear error
+                return $pResponse->withStatus(405); // Mejoras posibles: crear tipo de Excepción 405
             case Dispatcher::FOUND:
-                $handler = $route[1];
+                $handlers = $route[1];
                 $vars = $route[2];
                 break;
         }
@@ -78,7 +73,7 @@ class RouteContainer {
             $pRequest = $pRequest->withAttribute($name, $value);
         }
 
-        $this->executeRoute($pNext, $handler);
+        $this->registerMiddlewareRoute($pNext, $handlers);
 
         return $pNext($pRequest, $pResponse);
     }
@@ -87,15 +82,14 @@ class RouteContainer {
      * Método que registra los middlewares de la ruta despachada detras del indice actual de la cola de ejecución
      *
      * @param TornadoHttp $pApp
-     * @param array $pHandler
-     * @return ResponseInterface
+     * @param array $pHandlers
      */
-    public function executeRoute($pApp, $pHandler)
+    public function registerMiddlewareRoute($pApp, $pHandlers)
     {
         $middlewares = $pApp->getMiddlewares();
         $index = $middlewares->key();
 
-        foreach ($pHandler as $middlewareRoute) {
+        foreach ($pHandlers as $middlewareRoute) {
             $index++;
             $middlewares->add($index, $middlewareRoute);
         }

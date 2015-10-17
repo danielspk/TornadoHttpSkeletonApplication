@@ -1,31 +1,25 @@
 <?php
-namespace App\Provider\RouteAction;
+namespace App\Middleware\ADR;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use App\Provider\Helper\Config;
-use League\Container\Container;
-use League\Plates\Engine;
+use Interop\Container\ContainerInterface;
+use Zend\View\Renderer\PhpRenderer;
 
 /**
  * Clase padre para las Acciones de los Middlewares de Rutas
  *
- * @package App\Provider\RouteAction
+ * @package App\Middleware\ADR
  */
-abstract class RouteAction implements RouteActionInterface {
+abstract class MiddlewareAction implements MiddlewareActionInterface {
 
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @var Engine
+     * @var PhpRenderer
      */
     protected $view;
 
@@ -34,15 +28,14 @@ abstract class RouteAction implements RouteActionInterface {
      *
      * @param RequestInterface $pRequest Petición
      * @param ResponseInterface $pResponse Respuesta
-     * @param callable $pNext Próximo Middleware
+     * @param callable $pNext Próximo Action
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
         /** @var \DMS\TornadoHttp\TornadoHttp $pNext */
-        $this->config = $pNext->getConfig();
         $this->container = $pNext->getDI();
-        $this->view = $this->container->get('plates');
+        $this->view = $this->container->get('Renderer');
 
         $response = $this->run($pRequest, $pResponse);
 

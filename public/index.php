@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------------------------------------|
  * TORNADO-HTTP | Skeleton Application                                                                        |
  *                                                                                                            |
- * Tornado HTTP es un Contenedor Middleware para Aplicaciones                                                 |
+ * Tornado HTTP es un Contenedor Action para Aplicaciones                                                 |
  *                                                                                                            |
  * -----------------------------------------------------------------------------------------------------------|
  * ATENCIÓN: Edite bajo su riego, el tornado lo puedo arrasar.                                                |
@@ -99,52 +99,50 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Response;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\Config;
 
 require '../vendor/autoload.php';
 
 $mid1 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
-    $response->getBody()->write(' Middleware 1 ');
+    $response->getBody()->write('Action 1 process<br />');
     return $next($request, $response);
 };
 
 $mid2 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     /** @var \Psr\Http\Message\ResponseInterface $response */
     $response = $next($request, $response);
-    $response->getBody()->write(' Middleware 2 ');
+    $response->getBody()->write('Action 2 process<br />');
     return $response;
 };
 
 $mid3 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
     /** @var \DMS\TornadoHttp\TornadoHttp $next */
-    $conf = $next->getConfig();
-    $response->getBody()->write(' Middleware 3 ' . $conf['mode'] . ' ');
+    $conf = $next->getDI()->get('Config');
+    $response->getBody()->write('Action 3 process - Application mode: ' . $conf->mode . '<br />');
 
     //throw new \Exception('Custom Error');
 
     return $next($request, $response);
 };
 
-$app = new TornadoHttp([
-    'App\Middleware\ResponseEmitter',
-    'App\Middleware\ErrorHandler',
-    ['App\Middleware\ConfigLoader', [['../app/config.php', 'not found']]],
-    ['App\Middleware\ServiceContainer', ['../app/services-map.php', ['../app/services.php', 'not found']]],
-    ['App\Middleware\TemplateFolders', [['../app/views.php', 'not found']]],
-    ['App\Middleware\RouteContainer', [['../app/routes.php', 'not found']]],
-    $mid1,
-    $mid2
-]);
+$container = new ServiceManager(
+    new Config(
+        require '../app/services.php'
+    )
+);
+
+$app = new TornadoHttp(
+    [
+        'App\Middleware\ResponseEmitter',
+        'App\Middleware\ErrorHandler',
+        ['App\Middleware\RouteDispacher', [require '../app/routes.php']],
+        $mid1,
+        $mid2
+    ],
+    $container
+);
 
 $app->add($mid3);
-
-$app->setExceptionHandler(function (RequestInterface $request, ResponseInterface $response, callable $next, \Exception $e) {
-
-    $response = new Response();
-    $response = $response->withStatus(500);
-    $response->getBody()->write('Personal Error: ' . $e->getMessage() . ', ' . $e->getFile());
-
-    return $response;
-
-});
 
 $app(ServerRequestFactory::fromGlobals(), new Response());

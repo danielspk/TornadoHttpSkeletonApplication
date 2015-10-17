@@ -5,6 +5,6 @@
  */
 
 return [
-    'document.root' => '/tornadohttpskeletonapplication/public/',   // default: /
-    'mode'          => 'debug'                                      // default: debug
+    'document.root' => '/',     // default: /
+    'mode'          => 'debug'  // default: debug
 ];

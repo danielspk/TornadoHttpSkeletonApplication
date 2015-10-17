@@ -1,21 +1,21 @@
 <?php
-namespace App\Provider\RouteAction;
+namespace App\Middleware\ADR;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Interface para las Acciones de los Middlewares de Rutas
+ * Interface para las Acciones de los Middlewares de Acciones
  *
- * @package App\Provider\RouteAction
+ * @package App\Middleware\ADR
  */
-interface RouteActionInterface {
+interface MiddlewareActionInterface {
     /**
      * Método invocable por la ruta despachada
      *
      * @param RequestInterface $pRequest Petición
      * @param ResponseInterface $pResponse Respuesta
-     * @param callable $pNext Próximo Middleware
+     * @param callable $pNext Próximo Action
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext);

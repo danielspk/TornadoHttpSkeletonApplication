@@ -15,7 +15,6 @@ Action-Domain-Responder:
 
 El proyecto se distribuye bajo la licencia MIT.
 
-
 ## Sugerencias y colaboración:
 
 Email: info@daniel.spiridione.com.ar

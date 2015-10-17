@@ -6,9 +6,9 @@ use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\SapiEmitter;
 
 /**
- * Clase Middleware que emite la respuesta de la petición
+ * Clase Action que emite la respuesta de la petición
  *
- * @package App\Middleware
+ * @package App\Action
  */
 class ResponseEmitter {
 
@@ -17,7 +17,7 @@ class ResponseEmitter {
      *
      * @param RequestInterface $pRequest Peticion
      * @param ResponseInterface $pResponse Respuesta
-     * @param callable $pNext Próximo Middleware
+     * @param callable $pNext Próximo Action
      * @return ResponseInterface
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
