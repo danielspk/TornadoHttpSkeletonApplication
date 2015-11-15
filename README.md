@@ -1,7 +1,7 @@
 TORNADO HTTP SKELETON APPLICATION
 =================================
 
-Aplicación esqueleto para utilizar TORNADO HTTP
+Aplicación esqueleto de ejemplo para utilizar TORNADO HTTP
 
 ESTE PROYECTO SE ENCUENTRA EN CONSTRUCCIÓN!!
 

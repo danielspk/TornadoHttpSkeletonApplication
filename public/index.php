@@ -95,36 +95,12 @@
 namespace App;
 
 use DMS\TornadoHttp\TornadoHttp;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Zend\Diactoros\ServerRequestFactory;
 use Zend\Diactoros\Response;
-use Zend\ServiceManager\ServiceManager;
+use Zend\Diactoros\ServerRequestFactory;
 use Zend\ServiceManager\Config;
+use Zend\ServiceManager\ServiceManager;
 
 require '../vendor/autoload.php';
-
-$mid1 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
-    $response->getBody()->write('Action 1 process<br />');
-    return $next($request, $response);
-};
-
-$mid2 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
-    /** @var \Psr\Http\Message\ResponseInterface $response */
-    $response = $next($request, $response);
-    $response->getBody()->write('Action 2 process<br />');
-    return $response;
-};
-
-$mid3 = function (RequestInterface $request, ResponseInterface $response, callable $next) {
-    /** @var \DMS\TornadoHttp\TornadoHttp $next */
-    $conf = $next->getDI()->get('Config');
-    $response->getBody()->write('Action 3 process - Application mode: ' . $conf->mode . '<br />');
-
-    //throw new \Exception('Custom Error');
-
-    return $next($request, $response);
-};
 
 $container = new ServiceManager(
     new Config(
@@ -132,17 +108,27 @@ $container = new ServiceManager(
     )
 );
 
-$app = new TornadoHttp(
-    [
-        'App\Middleware\ResponseEmitter',
-        'App\Middleware\ErrorHandler',
-        ['App\Middleware\RouteDispacher', [require '../app/routes.php']],
-        $mid1,
-        $mid2
-    ],
-    $container
-);
+$app = new TornadoHttp();
+$app->setDI($container);
 
-$app->add($mid3);
+$request     = ServerRequestFactory::fromGlobals();
+$response    = new Response();
 
-$app(ServerRequestFactory::fromGlobals(), new Response());
+$method = $request->getMethod();
+$path   = $request->getUri()->getPath();
+
+$middlewares = [];
+
+foreach(require('../app/middlewares.php') as $middleware) {
+    if (isset($middleware['methods']) && !in_array($method, $middleware['methods'])) {
+        continue;
+    }
+    if (isset($middleware['path']) && preg_match($middleware['path'], $path) !== 1) {
+        continue;
+    }
+    $middlewares[] = $middleware['middleware'];
+}
+//var_dump($middlewares);
+$app->add($middlewares);
+
+$app($request, $response);

@@ -1,6 +1,8 @@
 <?php
 namespace App\Middleware;
 
+use App\Provider\Exception\HttpMethodNotAllowedException;
+use App\Provider\Exception\HttpNotFoundException;
 use DMS\TornadoHttp\TornadoHttp;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -37,6 +39,8 @@ class RouteDispacher {
      * @param ResponseInterface $pResponse Respuesta
      * @param callable $pNext Próximo Action
      * @return ResponseInterface
+     * @throws HttpMethodNotAllowedException
+     * @throws HttpNotFoundException
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
@@ -60,9 +64,9 @@ class RouteDispacher {
 
         switch ($route[0]) {
             case Dispatcher::NOT_FOUND:
-                return $pResponse->withStatus(404); // Mejoras posibles: crear tipo de Excepción 404
+                throw new HttpNotFoundException();
             case Dispatcher::METHOD_NOT_ALLOWED:
-                return $pResponse->withStatus(405); // Mejoras posibles: crear tipo de Excepción 405
+                throw new HttpMethodNotAllowedException();
             case Dispatcher::FOUND:
                 $handlers = $route[1];
                 $vars = $route[2];
@@ -91,7 +95,11 @@ class RouteDispacher {
 
         foreach ($pHandlers as $middlewareRoute) {
             $index++;
-            $middlewares->add($index, $middlewareRoute);
+            if ($middlewares->offsetExists($index)) {
+                $middlewares->add($index, $middlewareRoute);
+            } else {
+                $middlewares->enqueue($middlewareRoute);
+            }
         }
     }
 
