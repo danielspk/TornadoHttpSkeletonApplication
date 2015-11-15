@@ -25,7 +25,7 @@ class IndexAction extends MiddlewareAction
         /** @var \DateTime $date */
         $date = $this->container->get('DateTime');
 
-        $pResponse->getBody()->write('Action Action 1 process - date:' . $date->format('d/m/Y') . '<br />');
+        $pResponse->getBody()->write('Inside Route Action 1 process - date:' . $date->format('d/m/Y') . '<br />');
 
         $view = $this->container->get('ViewModel')
             ->setTemplate('example.php')

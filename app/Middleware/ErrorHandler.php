@@ -1,6 +1,8 @@
 <?php
 namespace App\Middleware;
 
+use App\Provider\Exception\HttpMethodNotAllowedException;
+use App\Provider\Exception\HttpNotFoundException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response;
@@ -22,17 +24,27 @@ class ErrorHandler {
      */
     public function __invoke(RequestInterface $pRequest, ResponseInterface $pResponse, callable $pNext)
     {
-        try{
+        try {
 
             $response = $pNext($pRequest, $pResponse);
 
+        } catch (HttpNotFoundException $e) {
+
+            $response = new Response();
+            $response = $response->withStatus(404);
+            $response->getBody()->write('Página no encontrada');
+
+        } catch (HttpMethodNotAllowedException $e) {
+
+            $response = new Response();
+            $response = $response->withStatus(405);
+            $response->getBody()->write('Método no soportado');
+
         } catch (\Exception $e) {
 
-            // Mejoras posibles: Según tipo de Excepción devolver distintos códigos de status
-            
             $response = new Response();
             $response = $response->withStatus(500);
-            $response->getBody()->write('Personal Error: ' . $e->getMessage() . ', ' . $e->getFile());
+            $response->getBody()->write('Fatal Error: ' . $e->getMessage() . ', ' . $e->getFile());
 
         }
 
