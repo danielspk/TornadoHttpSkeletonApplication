@@ -1,12 +1,7 @@
 <?php
 /**
  * -----------------------------------------------------------------------------------------------------------|
- * TORNADO-HTTP | Skeleton Application                                                                        |
- *                                                                                                            |
- * Tornado HTTP es un Contenedor Action para Aplicaciones                                                 |
- *                                                                                                            |
- * -----------------------------------------------------------------------------------------------------------|
- * ATENCIÓN: Edite bajo su riego, el tornado lo puedo arrasar.                                                |
+ *                                      TORNADO-HTTP Skeleton Application                                     |
  * -----------------------------------------------------------------------------------------------------------|
  *                                                                                                            |
  *                                                     ,''                                                    |
@@ -90,45 +85,33 @@
  *                                              `@@                                                           |
  *                                                @                                                           |
  *                                                                                                            |
- * ---------------------------------- Generado por: http://picascii.com ------------------------------------- |
+ * ---------------------------------- Generated with: http://picascii.com ----------------------------------- |
  */
 namespace App;
 
 use DMS\TornadoHttp\TornadoHttp;
+use Dotenv\Dotenv;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
-use Zend\ServiceManager\Config;
 use Zend\ServiceManager\ServiceManager;
 
 require '../vendor/autoload.php';
 
+$dotenv = new Dotenv('../src/App');
+$dotenv->load();
+
 $container = new ServiceManager(
-    new Config(
-        require '../app/services.php'
-    )
+    require '../src/App/services.php'
 );
 
-$app = new TornadoHttp();
+$middlewares = array_filter(
+    require '../src/App/middlewares.php',
+    function ($value) use ($container) {
+        return (!isset($value['devs']) || in_array($container->get('Config')->environment, $value['devs']));
+    },
+    \ARRAY_FILTER_USE_BOTH
+);
+
+$app = new TornadoHttp($middlewares);
 $app->setDI($container);
-
-$request     = ServerRequestFactory::fromGlobals();
-$response    = new Response();
-
-$method = $request->getMethod();
-$path   = $request->getUri()->getPath();
-
-$middlewares = [];
-
-foreach(require('../app/middlewares.php') as $middleware) {
-    if (isset($middleware['methods']) && !in_array($method, $middleware['methods'])) {
-        continue;
-    }
-    if (isset($middleware['path']) && preg_match($middleware['path'], $path) !== 1) {
-        continue;
-    }
-    $middlewares[] = $middleware['middleware'];
-}
-//var_dump($middlewares);
-$app->add($middlewares);
-
-$app($request, $response);
+$app(ServerRequestFactory::fromGlobals(), new Response());

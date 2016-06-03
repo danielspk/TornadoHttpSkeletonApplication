@@ -1,3 +1,3 @@
 <?php
 
-//require ...
+require '../vendor/autoload.php';

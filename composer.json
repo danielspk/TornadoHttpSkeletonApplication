@@ -3,9 +3,9 @@
     "description": "Aplicación esqueleto para el uso de Tornado HTTP",
     "type": "project",
     "keywords": [
-        "tornado http", "http", "tornado php", "tornado"
+        "tornado http", "tornado", "http", "skeleton"
     ],
-    "homepage": "http://tornado-php.com/",
+    "homepage": "http://tornadohttp.com/",
     "license": "MIT",
     "authors": [
         {
@@ -24,23 +24,28 @@
         "php": ">=5.5.0",
         "danielspk/tornadohttp": "~1.0",
         "zendframework/zend-diactoros": "~1.0",
-        "zendframework/zend-servicemanager": "~2.0",
+        "zendframework/zend-servicemanager": "~3.0",
         "zendframework/zend-config": "~2.0",
-        "zendframework/zend-view": "~2.0",
-        "zendframework/zend-filter": "~2.0",
-        "nikic/fast-route": "~0.0"
+        "nikic/fast-route": "~1.0",
+        "twig/twig": "~1.0",
+        "doctrine/orm": "~2.0",
+        "vlucas/valitron": "~1.0",
+        "vlucas/phpdotenv": "^2.0",
+        "firebase/php-jwt": "~3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
-    },
-    "suggest": {
-        "zendframework/zend-db": "~2.0 - Component that abstract the access to a Database",
-        "zendframework/zend-log": "~2.0 - Component for general purpose logging",
-        "zendframework/zend-permissions-acl": "~2.0 - Component for access control list (ACL)"
+        "phpunit/phpunit": "*",
+        "phpmd/phpmd": "*"
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "src/App/",
+            "Test\\": "test"
         }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "php -r \"copy('src/App/.env-example', 'src/App/.env');\""
+        ]
     }
 }
