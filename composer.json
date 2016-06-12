@@ -31,7 +31,8 @@
         "doctrine/orm": "~2.0",
         "vlucas/valitron": "~1.0",
         "vlucas/phpdotenv": "^2.0",
-        "firebase/php-jwt": "~3.0"
+        "firebase/php-jwt": "~3.0",
+        "doctrine/migrations": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
