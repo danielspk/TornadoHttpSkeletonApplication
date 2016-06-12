@@ -23,15 +23,16 @@
     "require": {
         "php": ">=5.5.0",
         "danielspk/tornadohttp": "~1.0",
-        "zendframework/zend-diactoros": "~1.0",
-        "zendframework/zend-servicemanager": "~3.0",
-        "zendframework/zend-config": "~2.0",
+        "doctrine/migrations": "^1.4",
+        "doctrine/orm": "~2.0",
+        "firebase/php-jwt": "~3.0",
         "nikic/fast-route": "~1.0",
         "twig/twig": "~1.0",
-        "doctrine/orm": "~2.0",
-        "vlucas/valitron": "~1.0",
         "vlucas/phpdotenv": "^2.0",
-        "firebase/php-jwt": "~3.0"
+        "vlucas/valitron": "~1.0",
+        "zendframework/zend-config": "~2.0",
+        "zendframework/zend-diactoros": "~1.0",
+        "zendframework/zend-servicemanager": "~3.0"    
     },
     "require-dev": {
         "phpunit/phpunit": "*",
