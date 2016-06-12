@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
@@ -5,38 +6,44 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Setup;
 use Dotenv\Dotenv;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
-/**
- * Doctrine console configuration
- */
+set_time_limit(0);
 
-// config by environment
+require 'vendor/autoload.php';
+
+// load config by environment
 $dotenv = new Dotenv('src/App');
 $dotenv->load();
 
 $config = require 'src/App/config.php';
 
-// config entityManager
+// config and create doctrine entityManager
 $isDevMode = ($config['environment'] == 'develop');
 $emSetup = Setup::createAnnotationMetadataConfiguration($config['doctrine.orm']['entities.src'], $isDevMode);
 $entityManager = EntityManager::create($config['doctrine.orm']['db.params'], $emSetup);
 
-// create helperSet
+// create doctrine helperSet
 $helperSet = ConsoleRunner::createHelperSet($entityManager);
 $helperSet->set(new QuestionHelper(), 'dialog');
 
-// create console application
-$cli = ConsoleRunner::createApplication($helperSet);
+// create symfony console from doctrine
+$console = new Application();
+$console->setHelperSet($helperSet);
+$console->setName('Tornado Http Skeleton Console');
 
-// config migration commands
+// add doctrine orm commands
+ConsoleRunner::addCommands($console);
+
+// config doctrine migration commands
 $migrationConfiguration = new Configuration($entityManager->getConnection());
 $migrationConfiguration->setMigrationsTableName('doctrine_migration_versions');
 $migrationConfiguration->setMigrationsNamespace('App\\Migrations');
 $migrationConfiguration->setMigrationsDirectory(__DIR__.'/src/App/Migrations');
 $migrationConfiguration->registerMigrationsFromDirectory(__DIR__.'/src/App/Migrations');
 
-// add migration commands to console application
+// add doctrine migration commands
 $migrationCommands = [
     'DiffCommand',
     'ExecuteCommand',
@@ -51,8 +58,15 @@ foreach($migrationCommands as $commandName) {
     $command = new $fullCommandName();
     $command->setMigrationConfiguration($migrationConfiguration);
 
-    $cli->add($command);
+    $console->add($command);
+}
+
+// add custom application commands
+foreach (glob("src/App/Console/*.php") as $commandName) {
+    $fullCommandName = 'App\\Console\\'.str_replace('/', '\\', ltrim(rtrim($commandName, '.php'), 'src/App/Console'));
+    $command = new $fullCommandName();
+    $console->add($command);
 }
 
 // run console
-return $cli->run();
+$console->run();
