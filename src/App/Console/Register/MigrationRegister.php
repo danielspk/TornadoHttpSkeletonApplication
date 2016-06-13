@@ -20,7 +20,7 @@ class MigrationRegister
      * @param ContainerInterface $container Container DI
      */
     public function __construct(Application $console, ContainerInterface $container) {
-        $entityManager = $entityManager = $container->get('EntityManager');
+        $entityManager = $container->get('EntityManager');
 
         $migrationConfiguration = new Configuration($entityManager->getConnection());
         $migrationConfiguration->setMigrationsTableName('doctrine_migration_versions');

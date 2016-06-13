@@ -26,6 +26,8 @@ class ORMRegister
         $helperSet = ConsoleRunner::createHelperSet($entityManager);
         $helperSet->set(new QuestionHelper(), 'dialog');
 
+        $console->setHelperSet($helperSet);
+
         ConsoleRunner::addCommands($console);
     }
 }
