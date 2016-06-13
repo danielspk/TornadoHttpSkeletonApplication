@@ -1,72 +1,32 @@
 #!/usr/bin/env php
 <?php
 
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\ORM\Tools\Setup;
-use Dotenv\Dotenv;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Helper\QuestionHelper;
+use Zend\ServiceManager\ServiceManager;
 
 set_time_limit(0);
 
 require 'vendor/autoload.php';
 
-// load config by environment
-$dotenv = new Dotenv('src/App');
-$dotenv->load();
+// create service manager
+$container = new ServiceManager(
+    require 'src/App/services.php'
+);
 
-$config = require 'src/App/config.php';
-
-// config and create doctrine entityManager
-$isDevMode = ($config['environment'] == 'develop');
-$emSetup = Setup::createAnnotationMetadataConfiguration($config['doctrine.orm']['entities.src'], $isDevMode);
-$entityManager = EntityManager::create($config['doctrine.orm']['db.params'], $emSetup);
-
-// create doctrine helperSet
-$helperSet = ConsoleRunner::createHelperSet($entityManager);
-$helperSet->set(new QuestionHelper(), 'dialog');
-
-// create symfony console from doctrine
+// create symfony console
 $console = new Application();
-$console->setHelperSet($helperSet);
 $console->setName('Tornado Http Skeleton Console');
 
-// add doctrine orm commands
-ConsoleRunner::addCommands($console);
-
-// config doctrine migration commands
-$migrationConfiguration = new Configuration($entityManager->getConnection());
-$migrationConfiguration->setMigrationsTableName('doctrine_migration_versions');
-$migrationConfiguration->setMigrationsNamespace('App\\Migrations');
-$migrationConfiguration->setMigrationsDirectory(__DIR__.'/src/App/Migrations');
-$migrationConfiguration->registerMigrationsFromDirectory(__DIR__.'/src/App/Migrations');
-
-// add doctrine migration commands
-$migrationCommands = [
-    'DiffCommand',
-    'ExecuteCommand',
-    'GenerateCommand',
-    'MigrateCommand',
-    'StatusCommand',
-    'VersionCommand',
-];
-
-foreach($migrationCommands as $commandName) {
-    /** @var \Doctrine\DBAL\Migrations\Tools\Console\Command\AbstractCommand $command */
-
-    $fullCommandName = 'Doctrine\\DBAL\\Migrations\\Tools\\Console\\Command\\'.$commandName;
-    $command = new $fullCommandName();
-    $command->setMigrationConfiguration($migrationConfiguration);
-
-    $console->add($command);
+// add custom register commands
+foreach (glob('src/App/Console/Register/*.php') as $commandName) {
+    $fullCommandName = 'App\\Console\\Register\\'.str_replace('/', '\\', ltrim(rtrim($commandName, '.php'), 'src/App/Console/Register'));
+    new $fullCommandName($console, $container);
 }
 
 // add custom application commands
-foreach (glob("src/App/Console/*.php") as $commandName) {
-    $fullCommandName = 'App\\Console\\'.str_replace('/', '\\', ltrim(rtrim($commandName, '.php'), 'src/App/Console'));
-    $command = new $fullCommandName();
+foreach (glob('src/App/Console/Command/*.php') as $commandName) {
+    $fullCommandName = 'App\\Console\\Command\\'.str_replace('/', '\\', ltrim(rtrim($commandName, '.php'), 'src/App/Console/Command'));
+    $command = new $fullCommandName($container);
     $console->add($command);
 }
 

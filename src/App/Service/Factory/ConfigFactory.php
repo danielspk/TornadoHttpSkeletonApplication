@@ -1,6 +1,7 @@
 <?php
 namespace App\Service\Factory;
 
+use Dotenv\Dotenv;
 use Zend\Config\Config;
 
 /**
@@ -17,6 +18,9 @@ class ConfigFactory
      */
     public function __invoke()
     {
+        $dotenv = new Dotenv(__DIR__.'/../../');
+        $dotenv->load();
+        
         return new Config(require __DIR__.'/../../config.php');
     }
 }
