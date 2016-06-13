@@ -1,4 +1,9 @@
+# Folders
 vendor/
+
+# Local environment
+src/App/.env
+
+# PHP
 composer.lock
 phpunit.phar
-.env
