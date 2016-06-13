@@ -6,36 +6,39 @@ use Zend\ServiceManager\ServiceManager;
 
 set_time_limit(0);
 
-require 'vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 // create service manager
 $container = new ServiceManager(
-    require 'src/App/services.php'
+    require __DIR__.'/../src/App/services.php'
 );
 
 // create symfony console
 $console = new Application();
 $console->setName('Tornado Http Skeleton Console');
 
+// base path files
+$path = realpath(__DIR__.'/../src');
+
 // add custom register commands
 $registerFiles = new RecursiveDirectoryIterator(
-    'src/App/Console/Register',
+    $path.'/App/Console/Register',
     FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
 );
 
 foreach (new RecursiveIteratorIterator($registerFiles) as $registerName) {
-    $fullRegisterName = str_replace('/', '\\', ltrim(rtrim($registerName->getPathName(), '.php'), 'src/'));
+    $fullRegisterName = str_replace('/', '\\', substr($registerName->getPathName(), strlen($path), -4));
     new $fullRegisterName($console, $container);
 }
 
 // add custom application commands
 $commandFiles = new RecursiveDirectoryIterator(
-    'src/App/Console/Command/',
+    $path.'/App/Console/Command/',
     FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
 );
 
 foreach (new RecursiveIteratorIterator($commandFiles) as $commandName) {
-    $fullCommandName = str_replace('/', '\\', ltrim(rtrim($commandName->getPathName(), '.php'), 'src/'));
+    $fullCommandName = str_replace('/', '\\', substr($commandName->getPathName(), strlen($path), -4));
     $command = new $fullCommandName($container);
     $console->add($command);
 }
