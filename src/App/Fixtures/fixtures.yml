@@ -1,0 +1,4 @@
+App\Module\Api\Domain\Entity\User:
+    user{1..5}:
+        email: <email()>
+        password: $fake('password')

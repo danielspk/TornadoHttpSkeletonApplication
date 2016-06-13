@@ -1,4 +1,4 @@
 TODO LIST
 =========
 
-* ORM: test migrations
+* Console: reflection to inject container

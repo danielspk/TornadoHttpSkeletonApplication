@@ -1,0 +1,44 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Application;
+use Zend\ServiceManager\ServiceManager;
+
+set_time_limit(0);
+
+require 'vendor/autoload.php';
+
+// create service manager
+$container = new ServiceManager(
+    require 'src/App/services.php'
+);
+
+// create symfony console
+$console = new Application();
+$console->setName('Tornado Http Skeleton Console');
+
+// add custom register commands
+$registerFiles = new RecursiveDirectoryIterator(
+    'src/App/Console/Register',
+    FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
+);
+
+foreach (new RecursiveIteratorIterator($registerFiles) as $registerName) {
+    $fullRegisterName = str_replace('/', '\\', ltrim(rtrim($registerName->getPathName(), '.php'), 'src/'));
+    new $fullRegisterName($console, $container);
+}
+
+// add custom application commands
+$commandFiles = new RecursiveDirectoryIterator(
+    'src/App/Console/Command/',
+    FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
+);
+
+foreach (new RecursiveIteratorIterator($commandFiles) as $commandName) {
+    $fullCommandName = str_replace('/', '\\', ltrim(rtrim($commandName->getPathName(), '.php'), 'src/'));
+    $command = new $fullCommandName($container);
+    $console->add($command);
+}
+
+// run console
+$console->run();

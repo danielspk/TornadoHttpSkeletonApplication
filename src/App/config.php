@@ -6,6 +6,7 @@
 
 return [
     'base.path'   => '/',
+    'dir.path'    => __DIR__.'/../..',
     'environment' => getenv('ENVIRONMENT') ?: 'develop',
     'templates'   => [
         'dir' => [

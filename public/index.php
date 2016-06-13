@@ -90,15 +90,11 @@
 namespace App;
 
 use DMS\TornadoHttp\TornadoHttp;
-use Dotenv\Dotenv;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\ServiceManager\ServiceManager;
 
 require '../vendor/autoload.php';
-
-$dotenv = new Dotenv('../src/App');
-$dotenv->load();
 
 $container = new ServiceManager(
     require '../src/App/services.php'

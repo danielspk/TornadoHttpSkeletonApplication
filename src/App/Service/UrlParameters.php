@@ -70,7 +70,7 @@ class UrlParameters
         } elseif ($key == 'sort') {
             $this->extractSort($filters, $value);
         } elseif ($key == 'query') {
-            $this->extractquery($filters, $value);
+            $this->extractQuery($filters, $value);
         } else {
             $filters['query'][] = $this->parseFilter($key, $value);
         }
