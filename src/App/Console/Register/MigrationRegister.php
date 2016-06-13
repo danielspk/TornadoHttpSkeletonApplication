@@ -19,7 +19,8 @@ class MigrationRegister
      * @param Application $console Console
      * @param ContainerInterface $container Container DI
      */
-    public function __construct(Application $console, ContainerInterface $container) {
+    public function __construct(Application $console, ContainerInterface $container)
+    {
         $entityManager = $container->get('EntityManager');
 
         $migrationConfiguration = new Configuration($entityManager->getConnection());
@@ -37,7 +38,7 @@ class MigrationRegister
             'VersionCommand',
         ];
 
-        foreach($migrationCommands as $commandName) {
+        foreach ($migrationCommands as $commandName) {
             /** @var \Doctrine\DBAL\Migrations\Tools\Console\Command\AbstractCommand $command */
 
             $fullCommandName = 'Doctrine\\DBAL\\Migrations\\Tools\\Console\\Command\\'.$commandName;

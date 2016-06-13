@@ -25,7 +25,8 @@ class FixtureCommand extends Command
      *
      * @param ContainerInterface $container Container DI
      */
-    public function __construct(ContainerInterface $container) {
+    public function __construct(ContainerInterface $container)
+    {
         parent::__construct();
 
         $this->container = $container;
@@ -34,7 +35,8 @@ class FixtureCommand extends Command
     /**
      * Configure command
      */
-    protected function configure() {
+    protected function configure()
+    {
         $this->setName('fixtures:run')
             ->setDescription('Run fixtures.');
     }
@@ -46,7 +48,8 @@ class FixtureCommand extends Command
      * @param OutputInterface $output Output console
      * @return void
      */
-    protected function execute(InputInterface $input, OutputInterface $output) {
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
         $entityManager = $this->container->get('EntityManager');
 
         Fixtures::load('src/App/Fixtures/fixtures.yml', $entityManager);

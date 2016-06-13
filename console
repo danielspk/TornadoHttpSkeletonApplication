@@ -18,14 +18,24 @@ $console = new Application();
 $console->setName('Tornado Http Skeleton Console');
 
 // add custom register commands
-foreach (glob('src/App/Console/Register/*.php') as $commandName) {
-    $fullCommandName = 'App\\Console\\Register\\'.str_replace('/', '\\', ltrim(rtrim($commandName, '.php'), 'src/App/Console/Register'));
-    new $fullCommandName($console, $container);
+$registerFiles = new RecursiveDirectoryIterator(
+    'src/App/Console/Register',
+    FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
+);
+
+foreach (new RecursiveIteratorIterator($registerFiles) as $registerName) {
+    $fullRegisterName = str_replace('/', '\\', ltrim(rtrim($registerName->getPathName(), '.php'), 'src/'));
+    new $fullRegisterName($console, $container);
 }
 
 // add custom application commands
-foreach (glob('src/App/Console/Command/*.php') as $commandName) {
-    $fullCommandName = 'App\\Console\\Command\\'.str_replace('/', '\\', ltrim(rtrim($commandName, '.php'), 'src/App/Console/Command'));
+$commandFiles = new RecursiveDirectoryIterator(
+    'src/App/Console/Command/',
+    FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
+);
+
+foreach (new RecursiveIteratorIterator($commandFiles) as $commandName) {
+    $fullCommandName = str_replace('/', '\\', ltrim(rtrim($commandName->getPathName(), '.php'), 'src/'));
     $command = new $fullCommandName($container);
     $console->add($command);
 }

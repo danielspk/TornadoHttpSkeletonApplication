@@ -20,7 +20,8 @@ class ORMRegister
      * @param Application $console Console
      * @param ContainerInterface $container Container DI
      */
-    public function __construct(Application $console, ContainerInterface $container) {
+    public function __construct(Application $console, ContainerInterface $container)
+    {
         $entityManager = $container->get('EntityManager');
 
         $helperSet = ConsoleRunner::createHelperSet($entityManager);
