@@ -28,7 +28,16 @@ $registerFiles = new RecursiveDirectoryIterator(
 
 foreach (new RecursiveIteratorIterator($registerFiles) as $registerName) {
     $fullRegisterName = str_replace('/', '\\', substr($registerName->getPathName(), strlen($path), -4));
-    new $fullRegisterName($console, $container);
+
+    $regParams = (new ReflectionClass($fullRegisterName))
+        ->getConstructor()
+        ->getParameters();
+
+    if (count($regParams) === 2 && $regParams[1]->getClass()->name === 'Interop\Container\ContainerInterface') {
+        new $fullRegisterName($console, $container);
+    } else {
+        new $fullRegisterName($console);
+    }
 }
 
 // add custom application commands
@@ -39,7 +48,17 @@ $commandFiles = new RecursiveDirectoryIterator(
 
 foreach (new RecursiveIteratorIterator($commandFiles) as $commandName) {
     $fullCommandName = str_replace('/', '\\', substr($commandName->getPathName(), strlen($path), -4));
-    $command = new $fullCommandName($container);
+
+    $cmdParams = (new ReflectionClass($fullCommandName))
+        ->getConstructor()
+        ->getParameters();
+
+    if (count($cmdParams) === 1 && $cmdParams[0]->getClass()->name === 'Interop\Container\ContainerInterface') {
+        $command = new $fullCommandName($container);
+    } else {
+        $command = new $fullCommandName();
+    }
+
     $console->add($command);
 }
 

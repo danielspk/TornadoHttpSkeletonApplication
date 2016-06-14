@@ -41,6 +41,10 @@
         "phpunit/phpunit": "*",
         "phpmd/phpmd": "*"
     },
+    "suggest": {
+        "oscarotero/psr7-middlewares": "PSR-7 middlewares",
+        "matthiasmullie/scrapbook": "PSR-6 cache + adapters"
+    },
     "autoload": {
         "psr-4": {
             "App\\": "src/App/",
