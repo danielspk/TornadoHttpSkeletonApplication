@@ -6,37 +6,59 @@ use Zend\ServiceManager\ServiceManager;
 
 set_time_limit(0);
 
-require 'vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 // create service manager
 $container = new ServiceManager(
-    require 'src/App/services.php'
+    require __DIR__.'/../src/App/services.php'
 );
 
 // create symfony console
 $console = new Application();
 $console->setName('Tornado Http Skeleton Console');
 
+// base path files
+$path = realpath(__DIR__.'/../src');
+
 // add custom register commands
 $registerFiles = new RecursiveDirectoryIterator(
-    'src/App/Console/Register',
+    $path.'/App/Console/Register',
     FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
 );
 
 foreach (new RecursiveIteratorIterator($registerFiles) as $registerName) {
-    $fullRegisterName = str_replace('/', '\\', ltrim(rtrim($registerName->getPathName(), '.php'), 'src/'));
-    new $fullRegisterName($console, $container);
+    $fullRegisterName = str_replace('/', '\\', substr($registerName->getPathName(), strlen($path), -4));
+
+    $regParams = (new ReflectionClass($fullRegisterName))
+        ->getConstructor()
+        ->getParameters();
+
+    if (count($regParams) === 2 && $regParams[1]->getClass()->name === 'Interop\Container\ContainerInterface') {
+        new $fullRegisterName($console, $container);
+    } else {
+        new $fullRegisterName($console);
+    }
 }
 
 // add custom application commands
 $commandFiles = new RecursiveDirectoryIterator(
-    'src/App/Console/Command/',
+    $path.'/App/Console/Command/',
     FilesystemIterator::SKIP_DOTS | FilesystemIterator::UNIX_PATHS
 );
 
 foreach (new RecursiveIteratorIterator($commandFiles) as $commandName) {
-    $fullCommandName = str_replace('/', '\\', ltrim(rtrim($commandName->getPathName(), '.php'), 'src/'));
-    $command = new $fullCommandName($container);
+    $fullCommandName = str_replace('/', '\\', substr($commandName->getPathName(), strlen($path), -4));
+
+    $cmdParams = (new ReflectionClass($fullCommandName))
+        ->getConstructor()
+        ->getParameters();
+
+    if (count($cmdParams) === 1 && $cmdParams[0]->getClass()->name === 'Interop\Container\ContainerInterface') {
+        $command = new $fullCommandName($container);
+    } else {
+        $command = new $fullCommandName();
+    }
+
     $console->add($command);
 }
 

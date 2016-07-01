@@ -21,13 +21,14 @@ class MigrationRegister
      */
     public function __construct(Application $console, ContainerInterface $container)
     {
+        $config = $container->get('Config');
         $entityManager = $container->get('EntityManager');
 
         $migrationConfiguration = new Configuration($entityManager->getConnection());
-        $migrationConfiguration->setMigrationsTableName('doctrine_migration_versions');
-        $migrationConfiguration->setMigrationsNamespace('App\\Migrations');
-        $migrationConfiguration->setMigrationsDirectory('src/App/Migrations');
-        $migrationConfiguration->registerMigrationsFromDirectory('src/App/Migrations');
+        $migrationConfiguration->setMigrationsTableName($config->{'doctrine.orm'}->migrations->table);
+        $migrationConfiguration->setMigrationsNamespace($config->{'doctrine.orm'}->migrations->namespace);
+        $migrationConfiguration->setMigrationsDirectory($config->{'doctrine.orm'}->migrations->directory);
+        $migrationConfiguration->registerMigrationsFromDirectory($config->{'doctrine.orm'}->migrations->directory);
         
         $migrationCommands = [
             'DiffCommand',

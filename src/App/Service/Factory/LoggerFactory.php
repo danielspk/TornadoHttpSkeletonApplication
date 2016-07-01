@@ -21,7 +21,9 @@ class LoggerFactory
     public function __invoke(ContainerInterface $container)
     {
         $logger = new Logger('Application');
-        $logger->pushHandler(new StreamHandler($container->get('Config')->{'dir.path'}.'/storage/logs/app.log', Logger::WARNING));
+        $logger->pushHandler(
+            new StreamHandler($container->get('Config')->{'dir.path'}.'/storage/logs/app.log', Logger::WARNING)
+        );
 
         return $logger;
     }

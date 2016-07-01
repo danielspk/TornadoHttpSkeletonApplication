@@ -27,6 +27,11 @@ return [
             'dbname'   => getenv('DB_NAME'),
             'user'     => getenv('DB_USER'),
             'password' => getenv('DB_PASSWORD')
+        ],
+        'migrations' => [
+            'table' => 'doctrine_migration_versions',
+            'namespace'  => 'App\\Migrations',
+            'directory'  => __DIR__.'/Migrations'
         ]
     ],
     'jwt' => [
