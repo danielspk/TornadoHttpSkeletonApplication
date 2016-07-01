@@ -52,6 +52,8 @@
         }
     },
     "scripts": {
+        "serve": "php -S 0.0.0.0:8888 -t public",
+        "test": "phpunit",
         "post-create-project-cmd": [
             "php -r \"copy('src/App/.env-example', 'src/App/.env');\""
         ]

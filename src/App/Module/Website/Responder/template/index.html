@@ -2,4 +2,6 @@
 
 {% block content %}
     <p>Welcome to {{title}}</p>
+    <p><a href="{{ path.create('getUsers') }}">Go to API: Get Users</a></p>
+    <p><a href="{{ path.create('getUser', {'id': 1}) }}">Go to API: Get User 1</a></p>
 {% endblock %}

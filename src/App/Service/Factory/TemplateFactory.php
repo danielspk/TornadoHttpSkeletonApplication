@@ -25,10 +25,13 @@ class TemplateFactory
         $config = $container->get('Config');
         
         $twigLoader = new Twig_Loader_Filesystem($config->templates->dir->toArray());
-        
-        return new Twig_Environment($twigLoader, [
+
+        $twig = new Twig_Environment($twigLoader, [
             'auto_reload' => ($config->environment != 'production'),
             'cache'       => $config->templates->cache
         ]);
+        $twig->addGlobal('path', $container->get('RouteGenerator'));
+
+        return $twig;
     }
 }
