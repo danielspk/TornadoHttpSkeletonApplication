@@ -1,6 +1,6 @@
 {
     "name": "danielspk/tornadohttpskeletonapplication",
-    "description": "Aplicación esqueleto para el uso de Tornado HTTP",
+    "description": "Tornado Http Skeleton Application",
     "type": "project",
     "keywords": [
         "tornado http", "tornado", "http", "skeleton"
