@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware\route;
+namespace App\Middleware\Router;
 
 use App\Exception\HttpMethodNotAllowedException;
 use App\Exception\HttpNotFoundException;
@@ -71,7 +71,7 @@ class Resolver
                 break;
         }
 
-        $request = $request->withAttribute('RoutesMiddlewaresKey', $handler);
+        $request = $request->withAttribute(Router::REGISTER_KEY, $handler);
 
         foreach ($vars as $name => $value) {
             $request = $request->withAttribute($name, $value);

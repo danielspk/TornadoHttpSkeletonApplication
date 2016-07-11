@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace App\Middleware\Exception;
 
 use App\Exception\AuthException;
 use App\Exception\HttpMethodNotAllowedException;
@@ -16,10 +16,10 @@ use Zend\Diactoros\Response\JsonResponse;
  *
  * @package App\Middleware
  */
-class ErrorHandler
+class Handler
 {
     use ContainerTrait;
-    
+
     /**
      * @var array Value of header Accept
      */
@@ -34,7 +34,7 @@ class ErrorHandler
      * @var boolean Indicate if the application are in debug mode
      */
     private $debug;
-    
+
     /**
      * Invocation
      *
@@ -47,7 +47,7 @@ class ErrorHandler
     {
         $this->accept = $request->getHeader('Accept');
         $this->debug  = in_array($this->container->get('Config')->environment, $this->debugModes);
-        
+
         try {
             $response = $next($request, $response);
         } catch (HttpNotFoundException $e) {
@@ -58,7 +58,7 @@ class ErrorHandler
             $response = $this->getResponseFormat('Access denied', 401, $e);
         } catch (QueryException $e) {
             $response = $this->getResponseFormat('Search criteria malformed', 400, $e);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $response = $this->getResponseFormat('Fatal Error', 500, $e);
         }
 
@@ -74,7 +74,7 @@ class ErrorHandler
      * @param \Exception $exception Exception caught
      * @return JsonResponse|HtmlResponse
      */
-    public function getResponseFormat($message, $status, \Exception $exception)
+    public function getResponseFormat($message, $status, \Throwable $exception)
     {
         if (count($this->accept) > 0 && $this->accept[0] == 'application/json') {
             $data = [
@@ -83,7 +83,7 @@ class ErrorHandler
                     'msg' => $message
                 ]
             ];
-            
+
             if ($this->debug) {
                 $data['error']['debug']['msg'] = $exception->getMessage();
                 $data['error']['debug']['file'] = $exception->getFile();
@@ -95,14 +95,14 @@ class ErrorHandler
         }
 
         $msg = $message;
-        
+
         if ($this->debug) {
             $msg .= '<br />Description: '.$exception->getMessage();
             $msg .= '<br />File: '.$exception->getFile();
             $msg .= '<br />Line: '.$exception->getLine();
             $msg .= '<br />Trace: '.$exception->getTraceAsString();
         }
-        
+
         return new HtmlResponse($msg, $status);
     }
 }

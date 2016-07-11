@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware\Route;
+namespace App\Middleware\Router;
 
 use DMS\TornadoHttp\TornadoHttp;
 use Psr\Http\Message\ResponseInterface;
@@ -26,7 +26,7 @@ class Dispatcher
     {
         $this->routes = $routes;
     }
-    
+
     /**
      * Invocation
      *
@@ -40,13 +40,13 @@ class Dispatcher
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, TornadoHttp $next)
     {
         $index = $next->getMiddlewareIndex();
-        
-        $routeMiddlewares = $this->routes[$request->getAttribute('RoutesMiddlewaresKey')]['middlewares'];
+
+        $routeMiddlewares = $this->routes[$request->getAttribute(Router::REGISTER_KEY)]['middlewares'];
 
         foreach ($routeMiddlewares as $middleware) {
             $next->add($middleware, null, null, null, ($index++));
         }
-        
+
         return $next($request, $response);
     }
 }

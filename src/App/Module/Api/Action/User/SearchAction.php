@@ -1,7 +1,7 @@
 <?php
 namespace App\Module\Api\Action\User;
 
-use App\Middleware\Route\Action;
+use App\Middleware\Action\Action;
 use App\Exception\HttpNotFoundException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
@@ -28,12 +28,12 @@ class SearchAction extends Action
         /** @var \Doctrine\ORM\EntityManager $entityManager */
         /** @var \App\Service\UrlParameters $urlParameters */
         /** @var \App\Module\Api\Domain\Entity\UserRepository $userRepository */
-        
+
         $idUser = $request->getAttribute('id');
 
         $entityManager  = $this->container->get('EntityManager');
         $userRepository = $entityManager->getRepository('Api:User');
-        
+
         if ($idUser) {
             $result = $userRepository->searchUser($idUser);
             if (!$result) {

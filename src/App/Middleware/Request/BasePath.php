@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace App\Middleware\Request;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,7 +15,7 @@ class BasePath
      * @var string Root path
      */
     private $basePath;
-    
+
     /**
      * Constructor
      *
@@ -25,7 +25,7 @@ class BasePath
     {
         $this->basePath = $basePath;
     }
-    
+
     /**
      * Invocation
      *
@@ -49,9 +49,9 @@ class BasePath
                 $request->getUri()->getPath()
             );
             $request = $request->withUri($uri->withPath($path));
-        
+
         }
-        
+
         return $next($request, $response);
     }
 }

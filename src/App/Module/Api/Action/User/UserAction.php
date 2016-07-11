@@ -2,7 +2,7 @@
 namespace App\Module\Api\Action\User;
 
 use App\Exception\HttpNotFoundException;
-use App\Middleware\Route\Action;
+use App\Middleware\Action\Action;
 use App\Module\Api\Domain\Entity\User;
 
 /**
@@ -28,11 +28,11 @@ abstract class UserAction extends Action
         $userRepository = $entityManager->getRepository('Api:User');
 
         $user = $userRepository->getUser($idUser);
-        
+
         if (!$user) {
             throw new HttpNotFoundException('The user does not exist');
         }
-        
+
         return $user;
     }
 }

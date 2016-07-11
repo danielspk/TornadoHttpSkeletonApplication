@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace App\Middleware\Request;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -63,7 +63,7 @@ class BodyParse
 
             $request = $request->withParsedBody($data);
         }
-        
+
         return $next($request, $response);
     }
 }

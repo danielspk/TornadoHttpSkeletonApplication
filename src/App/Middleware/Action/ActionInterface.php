@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware\Route;
+namespace App\Middleware\Action;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;

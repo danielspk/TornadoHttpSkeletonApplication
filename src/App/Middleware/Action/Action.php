@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware\Route;
+namespace App\Middleware\Action;
 
 use DMS\TornadoHttp\Middleware\Middleware;
 use DMS\TornadoHttp\Container\ContainerTrait;

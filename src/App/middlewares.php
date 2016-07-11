@@ -9,25 +9,25 @@ $middlewareBasePathExp = str_replace('/', '\/', $middlewareBasePath);
 
 return [
     [
-        'middleware' => App\Middleware\ResponseEmitter::class
+        'middleware' => App\Middleware\Response\SapiEmitter::class
     ],
     [
-        'middleware' => App\Middleware\ErrorHandler::class,
+        'middleware' => App\Middleware\Exception\Handler::class,
     ],
     [
-        'middleware' => [App\Middleware\BasePath::class, [$middlewareBasePath]]
+        'middleware' => [App\Middleware\Request\BasePath::class, [$middlewareBasePath]]
     ],
     [
-        'middleware' => App\Middleware\BodyParse::class,
+        'middleware' => App\Middleware\Request\BodyParse::class,
     ],
     [
-        'middleware' => [App\Middleware\Route\Resolver::class, [require 'routes.php']]
+        'middleware' => [App\Middleware\Router\Resolver::class, [require 'routes.php']]
     ],
     [
         'middleware' => App\Middleware\Auth\Jwt::class,
         'path'       => '/^'.$middlewareBasePathExp.'api\/v1/'
     ],
     [
-        'middleware' => [App\Middleware\Route\Dispatcher::class, [require 'routes.php']]
+        'middleware' => [App\Middleware\Router\Dispatcher::class, [require 'routes.php']]
     ]
 ];
