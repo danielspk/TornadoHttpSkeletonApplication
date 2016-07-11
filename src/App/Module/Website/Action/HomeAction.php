@@ -3,7 +3,7 @@ namespace App\Module\Website\Action;
 
 use App\Middleware\Route\Action;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;
 
 /**
@@ -16,11 +16,11 @@ class HomeAction extends Action
     /**
      * Action logic
      *
-     * @param ServerRequestInterface $request Request
+     * @param RequestInterface $request Request
      * @param ResponseInterface $response Response
      * @return ResponseInterface
      */
-    public function run(ServerRequestInterface $request, ResponseInterface $response)
+    public function run(RequestInterface $request, ResponseInterface $response)
     {
         /** @var \Twig_Environment $template */
 

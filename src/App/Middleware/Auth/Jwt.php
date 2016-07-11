@@ -2,7 +2,7 @@
 namespace App\Middleware\Auth;
 
 use App\Exception\AuthException;
-use DMS\TornadoHttp\ContainerTrait;
+use DMS\TornadoHttp\Container\ContainerTrait;
 use Firebase\JWT\JWT as JWTLib;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

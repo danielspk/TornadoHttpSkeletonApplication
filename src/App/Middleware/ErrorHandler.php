@@ -4,7 +4,7 @@ namespace App\Middleware;
 use App\Exception\AuthException;
 use App\Exception\HttpMethodNotAllowedException;
 use App\Exception\HttpNotFoundException;
-use DMS\TornadoHttp\ContainerTrait;
+use DMS\TornadoHttp\Container\ContainerTrait;
 use Doctrine\ORM\Query\QueryException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
