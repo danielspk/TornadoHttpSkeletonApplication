@@ -4,7 +4,7 @@ namespace App\Module\Api\Action\User;
 use App\Module\Api\Domain\Validator\UserValidator;
 use App\Module\Api\Responder\ValidationJsonResponse;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
@@ -17,12 +17,13 @@ class ModifyAction extends UserAction
     /**
      * Action logic
      *
-     * @param ServerRequestInterface $request Request
+     * @param RequestInterface $request Request
      * @param ResponseInterface $response Response
      * @return ResponseInterface
      */
-    public function run(ServerRequestInterface $request, ResponseInterface $response)
+    public function run(RequestInterface $request, ResponseInterface $response)
     {
+        /** @var \Psr\Http\Message\ServerRequestInterface $request */
         /** @var \Doctrine\ORM\EntityManager $entityManager */
 
         // recovering the user data and validate

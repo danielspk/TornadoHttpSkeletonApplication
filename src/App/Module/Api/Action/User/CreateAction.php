@@ -6,7 +6,7 @@ use App\Module\Api\Domain\Entity\User;
 use App\Module\Api\Domain\Validator\UserValidator;
 use App\Module\Api\Responder\ValidationJsonResponse;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
@@ -19,12 +19,13 @@ class CreateAction extends Action
     /**
      * Action logic
      *
-     * @param ServerRequestInterface $request Petición
+     * @param RequestInterface $request Petición
      * @param ResponseInterface $response Respuesta
      * @return ResponseInterface
      */
-    public function run(ServerRequestInterface $request, ResponseInterface $response)
+    public function run(RequestInterface $request, ResponseInterface $response)
     {
+        /** @var \Psr\Http\Message\ServerRequestInterface $request */
         /** @var \Doctrine\ORM\EntityManager $entityManager */
 
         // data is validated

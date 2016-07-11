@@ -44,7 +44,7 @@ class Dispatcher
         $routeMiddlewares = $this->routes[$request->getAttribute('RoutesMiddlewaresKey')]['middlewares'];
 
         foreach ($routeMiddlewares as $middleware) {
-            $next->add($middleware, null, null, ($index++));
+            $next->add($middleware, null, null, null, ($index++));
         }
         
         return $next($request, $response);

@@ -29,9 +29,9 @@ return [
             'password' => getenv('DB_PASSWORD')
         ],
         'migrations' => [
-            'table' => 'doctrine_migration_versions',
-            'namespace'  => 'App\\Migrations',
-            'directory'  => __DIR__.'/Migrations'
+            'table'     => 'doctrine_migration_versions',
+            'namespace' => 'App\\Migrations',
+            'directory' => __DIR__.'/Migrations'
         ]
     ],
     'jwt' => [

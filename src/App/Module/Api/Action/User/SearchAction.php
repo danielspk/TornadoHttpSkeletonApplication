@@ -4,7 +4,7 @@ namespace App\Module\Api\Action\User;
 use App\Middleware\Route\Action;
 use App\Exception\HttpNotFoundException;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 
 /**
@@ -17,13 +17,14 @@ class SearchAction extends Action
     /**
      * Action logic
      *
-     * @param ServerRequestInterface $request Request
+     * @param RequestInterface $request Request
      * @param ResponseInterface $response Response
      * @return ResponseInterface
      * @throws HttpNotFoundException
      */
-    public function run(ServerRequestInterface $request, ResponseInterface $response)
+    public function run(RequestInterface $request, ResponseInterface $response)
     {
+        /** @var \Psr\Http\Message\ServerRequestInterface $request */
         /** @var \Doctrine\ORM\EntityManager $entityManager */
         /** @var \App\Service\UrlParameters $urlParameters */
         /** @var \App\Module\Api\Domain\Entity\UserRepository $userRepository */

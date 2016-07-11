@@ -100,14 +100,9 @@ $container = new ServiceManager(
     require '../src/App/services.php'
 );
 
-$middlewares = array_filter(
-    require '../src/App/middlewares.php',
-    function ($value) use ($container) {
-        return (!isset($value['devs']) || in_array($container->get('Config')->environment, $value['devs']));
-    },
-    \ARRAY_FILTER_USE_BOTH
-);
+$middlewares = require '../src/App/middlewares.php';
 
 $app = new TornadoHttp($middlewares);
 $app->setDI($container);
+$app->setEnvironment($container->get('Config')->environment);
 $app(ServerRequestFactory::fromGlobals(), new Response());
