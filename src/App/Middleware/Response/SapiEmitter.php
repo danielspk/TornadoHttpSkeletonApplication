@@ -1,5 +1,5 @@
 <?php
-namespace App\Middleware;
+namespace App\Middleware\Response;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -10,7 +10,7 @@ use Zend\Diactoros\Response\SapiEmitter;
  *
  * @package App\Middleware
  */
-class ResponseEmitter
+class SapiEmitter
 {
     /**
      * Invocation

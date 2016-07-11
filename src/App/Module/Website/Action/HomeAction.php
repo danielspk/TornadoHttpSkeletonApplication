@@ -1,7 +1,7 @@
 <?php
 namespace App\Module\Website\Action;
 
-use App\Middleware\Route\Action;
+use App\Middleware\Action\Action;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
 use Zend\Diactoros\Response\HtmlResponse;

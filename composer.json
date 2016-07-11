@@ -21,7 +21,7 @@
         "source": "https://github.com/danielspk/tornadohttpskeletonapplication"
     },
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=7.0.0",
         "danielspk/tornadohttp": "~1.0",
         "doctrine/migrations": "~1.0",
         "doctrine/orm": "~2.0",
